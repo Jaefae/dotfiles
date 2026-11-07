@@ -41,6 +41,14 @@ return {
 		default_file_explorer = true,
 		keymaps = {
 			["<CR>"] = open_entry_in_other_window,
+			-- oil's defaults for these (<C-h> = select_split, <C-l> =
+			-- refresh) shadow the global <C-hjkl> window-nav keymaps in
+			-- config/keymaps.lua, so disable them and let the global ones
+			-- through for moving focus out of the sidebar.
+			["<C-h>"] = false,
+			["<C-j>"] = false,
+			["<C-k>"] = false,
+			["<C-l>"] = false,
 		},
 	},
 }
