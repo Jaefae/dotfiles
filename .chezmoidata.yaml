@@ -1,0 +1,30 @@
+# Single source of truth for the color theme.
+# Edit this file and run `chezmoi apply` to re-theme WezTerm, Neovim, and starship.
+# Shape: base24 (base16 slots 00-0F plus extended ANSI-bright slots 10-17).
+theme:
+  name: "Flexoki Moon"
+  palette:
+    base00: "100f0f" # bg
+    base01: "1c1b1a" # bg alt
+    base02: "343331" # selection bg
+    base03: "575653" # comment / muted fg
+    base04: "878580" # dim fg
+    base05: "cecdc3" # fg
+    base06: "e6e4d9" # bright fg
+    base07: "fffcf0" # brightest fg
+    base08: "af3029" # red
+    base09: "bc5215" # orange
+    base0A: "ad8301" # yellow
+    base0B: "66800b" # green
+    base0C: "24837b" # cyan
+    base0D: "205ea6" # blue
+    base0E: "a02f6f" # magenta
+    base0F: "205ea6" # brown slot (aliased to blue)
+    base10: "100f0f" # ansi bright black
+    base11: "575653" # ansi bright white/grey
+    base12: "d14d41" # ansi bright red
+    base13: "d0a215" # ansi bright yellow
+    base14: "879a39" # ansi bright green
+    base15: "3aa99f" # ansi bright cyan
+    base16: "4385be" # ansi bright blue
+    base17: "ce5d97" # ansi bright magenta

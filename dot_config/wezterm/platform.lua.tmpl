@@ -1,0 +1,13 @@
+-- OS-specific settings, rendered per-machine by chezmoi.
+local M = {}
+
+function M.apply_to_config(config)
+{{ if eq .chezmoi.os "windows" -}}
+	config.default_prog = { "pwsh", "-NoLogo" }
+	config.front_end = "WebGpu"
+{{ else -}}
+	config.front_end = "OpenGL"
+{{ end -}}
+end
+
+return M

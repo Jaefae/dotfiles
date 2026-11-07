@@ -1,0 +1,22 @@
+local wezterm = require("wezterm")
+local config = wezterm.config_builder()
+
+-- Modules live alongside this file and are loaded from the rendered config
+-- directory, so `require` needs config_dir on its search path.
+package.path = package.path .. ";" .. wezterm.config_dir .. "/?.lua"
+
+require("theme").apply_to_config(config)
+require("platform").apply_to_config(config)
+require("keys").apply_to_config(config)
+require("hyperlinks").apply_to_config(config)
+
+config.max_fps = 120
+config.animation_fps = 60
+config.default_cursor_style = "SteadyBlock"
+config.font = wezterm.font_with_fallback({
+	"Monaspace Neon",
+	"Symbols Nerd Font Mono",
+})
+config.font_size = 12.0
+
+return config

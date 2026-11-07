@@ -1,0 +1,42 @@
+name: verify
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  chezmoi-apply-dry-run:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install chezmoi
+        run: sh -c "$(curl -fsLS get.chezmoi.io)" -- -b "$HOME/.local/bin"
+        if: runner.os != 'Windows'
+
+      - name: Install chezmoi (Windows)
+        run: winget install twpayne.chezmoi --accept-source-agreements --accept-package-agreements
+        if: runner.os == 'Windows'
+
+      - name: Dry-run apply into a scratch home
+        shell: bash
+        run: |
+          mkdir -p "$RUNNER_TEMP/home"
+          "$HOME/.local/bin/chezmoi" init --apply --source="$GITHUB_WORKSPACE" \
+            --destination="$RUNNER_TEMP/home" \
+            --promptString name=Test,email=test@example.com \
+            --dry-run -v
+        if: runner.os != 'Windows'
+
+      - name: Dry-run apply into a scratch home (Windows)
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force "$env:RUNNER_TEMP\home" | Out-Null
+          chezmoi init --apply --source="$env:GITHUB_WORKSPACE" `
+            --destination="$env:RUNNER_TEMP\home" `
+            --promptString name=Test,email=test@example.com `
+            --dry-run -v
+        if: runner.os == 'Windows'

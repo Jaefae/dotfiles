@@ -1,0 +1,34 @@
+# Generated from ../../.chezmoidata.yaml by chezmoi — do not hand-edit the palette block.
+# Edit the theme there and run `chezmoi apply` to regenerate this file.
+
+[palettes.theme]
+fg      = "#{{ .theme.palette.base05 }}"
+bg      = "#{{ .theme.palette.base00 }}"
+muted   = "#{{ .theme.palette.base03 }}"
+red     = "#{{ .theme.palette.base08 }}"
+orange  = "#{{ .theme.palette.base09 }}"
+yellow  = "#{{ .theme.palette.base0A }}"
+green   = "#{{ .theme.palette.base0B }}"
+cyan    = "#{{ .theme.palette.base0C }}"
+blue    = "#{{ .theme.palette.base0D }}"
+magenta = "#{{ .theme.palette.base0E }}"
+
+palette = "theme"
+add_newline = false
+format = """$directory$git_branch$git_status$character"""
+
+[directory]
+style = "bold green"
+truncation_length = 3
+truncate_to_repo = true
+
+[git_branch]
+style = "bold magenta"
+symbol = " "
+
+[git_status]
+style = "bold red"
+
+[character]
+success_symbol = "[❯](bold green)"
+error_symbol = "[❯](bold red)"

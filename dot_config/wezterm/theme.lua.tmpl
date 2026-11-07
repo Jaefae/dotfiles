@@ -1,0 +1,42 @@
+-- Generated from ../../.chezmoidata.yaml by chezmoi — do not hand-edit the
+-- palette values below. Edit the theme there and run `chezmoi apply`.
+local M = {}
+
+local scheme_name = "{{ .theme.name }}"
+
+local scheme = {
+	foreground = "#{{ .theme.palette.base05 }}",
+	background = "#{{ .theme.palette.base00 }}",
+	cursor_bg = "#{{ .theme.palette.base05 }}",
+	cursor_fg = "#{{ .theme.palette.base00 }}",
+	cursor_border = "#{{ .theme.palette.base05 }}",
+	selection_bg = "#{{ .theme.palette.base02 }}",
+	selection_fg = "#{{ .theme.palette.base05 }}",
+	ansi = {
+		"#{{ .theme.palette.base00 }}",
+		"#{{ .theme.palette.base08 }}",
+		"#{{ .theme.palette.base0B }}",
+		"#{{ .theme.palette.base0A }}",
+		"#{{ .theme.palette.base0D }}",
+		"#{{ .theme.palette.base0E }}",
+		"#{{ .theme.palette.base0C }}",
+		"#{{ .theme.palette.base05 }}",
+	},
+	brights = {
+		"#{{ .theme.palette.base10 }}",
+		"#{{ .theme.palette.base12 }}",
+		"#{{ .theme.palette.base14 }}",
+		"#{{ .theme.palette.base13 }}",
+		"#{{ .theme.palette.base16 }}",
+		"#{{ .theme.palette.base17 }}",
+		"#{{ .theme.palette.base15 }}",
+		"#{{ .theme.palette.base07 }}",
+	},
+}
+
+function M.apply_to_config(config)
+	config.color_schemes = { [scheme_name] = scheme }
+	config.color_scheme = scheme_name
+end
+
+return M

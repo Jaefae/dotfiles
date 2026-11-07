@@ -1,0 +1,11 @@
+#!/bin/bash
+set -euo pipefail
+
+# Re-runs whenever the plugin spec or the theme data changes (hashes below),
+# via chezmoi's run_onchange_ convention.
+# chezmoi-colorscheme-hash: {{ include "dot_config/nvim/lua/plugins/colorscheme.lua.tmpl" | sha256sum }}
+# chezmoi-theme-hash: {{ .theme.palette | toJson | sha256sum }}
+
+if command -v nvim >/dev/null 2>&1; then
+	nvim --headless "+Lazy! sync" +qa
+fi
