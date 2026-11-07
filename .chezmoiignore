@@ -4,3 +4,14 @@ Documents/PowerShell/Microsoft.PowerShell_profile.ps1
 {{ if eq .chezmoi.os "windows" }}
 .bashrc
 {{ end -}}
+
+{{/* Scripts can't be no-op'd by emptying their template body: Windows has no
+     interpreter for a .sh file, and POSIX systems won't invoke a .ps1 by
+     default, so the non-matching OS's install script must be excluded
+     entirely rather than just rendered empty. */}}
+{{ if ne .chezmoi.os "darwin" }}
+.chezmoiscripts/00-install-packages-darwin.sh
+{{ end -}}
+{{ if ne .chezmoi.os "windows" }}
+.chezmoiscripts/00-install-packages-windows.ps1
+{{ end -}}
