@@ -1,0 +1,8 @@
+# Re-runs whenever the plugin spec or the theme data changes (hashes below),
+# via chezmoi's run_onchange_ convention.
+# chezmoi-colorscheme-hash: {{ include "dot_config/nvim/lua/plugins/colorscheme.lua.tmpl" | sha256sum }}
+# chezmoi-theme-hash: {{ .theme.palette | toJson | sha256sum }}
+
+if (Get-Command nvim -ErrorAction SilentlyContinue) {
+    nvim --headless "+Lazy! sync" +qa
+}

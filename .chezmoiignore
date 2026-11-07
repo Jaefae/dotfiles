@@ -15,3 +15,9 @@ Documents/PowerShell/Microsoft.PowerShell_profile.ps1
 {{ if ne .chezmoi.os "windows" }}
 .chezmoiscripts/00-install-packages-windows.ps1
 {{ end -}}
+{{ if eq .chezmoi.os "windows" }}
+nvim-sync-plugins-unix.sh
+{{ end -}}
+{{ if ne .chezmoi.os "windows" }}
+nvim-sync-plugins-windows.ps1
+{{ end -}}

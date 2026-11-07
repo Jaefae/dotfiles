@@ -8,14 +8,6 @@
      otherwise it silently resets to the default ~/.local/share/chezmoi. */}}
 sourceDir = {{ .chezmoi.sourceDir | quote }}
 
-{{ if eq .chezmoi.os "windows" -}}
-{{/* Windows has no native shebang support, so .sh scripts (run_onchange_
-     nvim-sync-plugins.sh) need an explicit interpreter. Resolved via Git for
-     Windows' bash.exe on PATH. */}}
-[interpreters.sh]
-    command = "bash"
-{{ end -}}
-
 [data]
     name = {{ $name | quote }}
     email = {{ $email | quote }}
