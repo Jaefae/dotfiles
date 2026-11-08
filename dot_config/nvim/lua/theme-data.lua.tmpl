@@ -1,0 +1,19 @@
+-- Generated from ../../.chezmoidata.yaml by chezmoi — do not hand-edit.
+-- Lua-native view of the theme data, used by the <leader>ft theme picker
+-- (lua/plugins/telescope.lua) so it doesn't need to shell out to parse
+-- YAML/JSON just to list the available themes.
+return {
+	current = "{{ .current_theme }}",
+	themes = {
+{{- range $slug, $theme := .themes }}
+		["{{ $slug }}"] = {
+			name = "{{ $theme.name }}",
+			palette = {
+{{- range $key, $value := $theme.palette }}
+				{{ $key }} = "#{{ $value }}",
+{{- end }}
+			},
+		},
+{{- end }}
+	},
+}

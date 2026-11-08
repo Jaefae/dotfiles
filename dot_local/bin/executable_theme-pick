@@ -1,0 +1,25 @@
+#!/bin/bash
+# Lists the themes from .chezmoidata.yaml via fzf and hands the choice to
+# theme-sync, which syncs WezTerm and starship live.
+#
+# Known gap: this does NOT recolor an already-running Neovim instance —
+# use the <leader>ft Telescope picker inside Neovim for that. This script
+# is for switching from a plain terminal when Neovim isn't open.
+set -euo pipefail
+
+source_dir="$(chezmoi source-path)"
+
+list_template='{{ range $slug, $t := .themes }}{{ $slug }}  {{ $t.name }}
+{{ end }}'
+
+choice="$(
+	chezmoi execute-template "$list_template" \
+		| fzf --prompt="Theme> " --with-nth=2.. --delimiter='  '
+)"
+
+if [ -z "$choice" ]; then
+	exit 0
+fi
+
+slug="$(awk '{print $1}' <<<"$choice")"
+"$(dirname "$0")/theme-sync" "$slug"

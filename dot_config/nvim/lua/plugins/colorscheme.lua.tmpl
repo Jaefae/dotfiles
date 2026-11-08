@@ -1,28 +1,29 @@
 -- Generated from ../../../../.chezmoidata.yaml by chezmoi — do not hand-edit
--- the palette values below. Edit the theme there and run `chezmoi apply`.
--- Re-theming nvim is then a one-file YAML edit, no plugin swap needed.
+-- the palette values below. Edit the theme there and run `chezmoi apply`
+-- (or switch themes live via <leader>ft / `theme-pick`).
+{{- $palette := (index .themes .current_theme).palette }}
 return {
 	"RRethy/base16-nvim",
 	lazy = false,
 	priority = 1000,
 	config = function()
 		require("base16-colorscheme").setup({
-			base00 = "#{{ .theme.palette.base00 }}",
-			base01 = "#{{ .theme.palette.base01 }}",
-			base02 = "#{{ .theme.palette.base02 }}",
-			base03 = "#{{ .theme.palette.base03 }}",
-			base04 = "#{{ .theme.palette.base04 }}",
-			base05 = "#{{ .theme.palette.base05 }}",
-			base06 = "#{{ .theme.palette.base06 }}",
-			base07 = "#{{ .theme.palette.base07 }}",
-			base08 = "#{{ .theme.palette.base08 }}",
-			base09 = "#{{ .theme.palette.base09 }}",
-			base0A = "#{{ .theme.palette.base0A }}",
-			base0B = "#{{ .theme.palette.base0B }}",
-			base0C = "#{{ .theme.palette.base0C }}",
-			base0D = "#{{ .theme.palette.base0D }}",
-			base0E = "#{{ .theme.palette.base0E }}",
-			base0F = "#{{ .theme.palette.base0F }}",
+			base00 = "#{{ $palette.base00 }}",
+			base01 = "#{{ $palette.base01 }}",
+			base02 = "#{{ $palette.base02 }}",
+			base03 = "#{{ $palette.base03 }}",
+			base04 = "#{{ $palette.base04 }}",
+			base05 = "#{{ $palette.base05 }}",
+			base06 = "#{{ $palette.base06 }}",
+			base07 = "#{{ $palette.base07 }}",
+			base08 = "#{{ $palette.base08 }}",
+			base09 = "#{{ $palette.base09 }}",
+			base0A = "#{{ $palette.base0A }}",
+			base0B = "#{{ $palette.base0B }}",
+			base0C = "#{{ $palette.base0C }}",
+			base0D = "#{{ $palette.base0D }}",
+			base0E = "#{{ $palette.base0E }}",
+			base0F = "#{{ $palette.base0F }}",
 		})
 	end,
 }

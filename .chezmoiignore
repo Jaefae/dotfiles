@@ -21,3 +21,12 @@ nvim-sync-plugins-unix.sh
 {{ if ne .chezmoi.os "windows" }}
 nvim-sync-plugins-windows.ps1
 {{ end -}}
+
+{{ if eq .chezmoi.os "windows" }}
+.local/bin/theme-sync
+.local/bin/theme-pick
+{{ end -}}
+{{ if ne .chezmoi.os "windows" }}
+.local/bin/theme-sync.ps1
+.local/bin/theme-pick.ps1
+{{ end -}}

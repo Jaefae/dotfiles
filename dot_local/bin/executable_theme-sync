@@ -1,0 +1,43 @@
+#!/bin/bash
+# Persists the chosen theme slug into .chezmoidata.yaml, then renders the
+# templates that encode it straight to their real destinations via
+# `chezmoi execute-template` — skipping a full `chezmoi apply` so WezTerm
+# (auto-reloads on config-file change) and starship (re-reads its config
+# every prompt) sync instantly, without touching anything else chezmoi
+# manages. A later `chezmoi apply` is then a no-op for these files.
+#
+# Called by the <leader>ft Telescope picker inside Neovim and by the
+# standalone `theme-pick` (fzf) script. Usage: theme-sync <theme-slug>
+set -euo pipefail
+
+if [ $# -ne 1 ]; then
+	echo "usage: theme-sync <theme-slug>" >&2
+	exit 1
+fi
+slug="$1"
+
+source_dir="$(chezmoi source-path)"
+data_file="$source_dir/.chezmoidata.yaml"
+
+if ! grep -q '^current_theme:' "$data_file"; then
+	echo "theme-sync: no current_theme: line found in $data_file" >&2
+	exit 1
+fi
+
+tmp_data="$(mktemp)"
+{
+	printf 'current_theme: "%s"\n' "$slug"
+	grep -v '^current_theme:' "$data_file"
+} >"$tmp_data"
+mv "$tmp_data" "$data_file"
+
+render() {
+	chezmoi execute-template -f "$source_dir/$1" >"$2"
+}
+
+render "dot_config/wezterm/theme.lua.tmpl" "$HOME/.config/wezterm/theme.lua"
+render "dot_config/starship.toml.tmpl" "$HOME/.config/starship.toml"
+render "dot_config/nvim/lua/plugins/colorscheme.lua.tmpl" "$HOME/.config/nvim/lua/plugins/colorscheme.lua"
+render "dot_config/nvim/lua/theme-data.lua.tmpl" "$HOME/.config/nvim/lua/theme-data.lua"
+
+echo "Theme set to $slug"

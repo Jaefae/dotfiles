@@ -2,7 +2,7 @@
 {{ if eq .chezmoi.os "darwin" -}}
 set -euo pipefail
 
-packages=(wezterm neovim starship zoxide eza fd ripgrep git)
+packages=(wezterm neovim starship zoxide eza fd ripgrep git fzf)
 
 for pkg in "${packages[@]}"; do
     brew install "$pkg" 2>/dev/null || brew upgrade "$pkg" 2>/dev/null || true
