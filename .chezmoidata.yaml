@@ -20,8 +20,8 @@ theme:
     base0D: "205ea6" # blue
     base0E: "a02f6f" # magenta
     base0F: "205ea6" # brown slot (aliased to blue)
-    base10: "100f0f" # ansi bright black
-    base11: "575653" # ansi bright white/grey
+    base10: "575653" # ansi bright black
+    base11: "fffcf0" # ansi bright white/grey
     base12: "d14d41" # ansi bright red
     base13: "d0a215" # ansi bright yellow
     base14: "879a39" # ansi bright green

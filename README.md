@@ -11,7 +11,7 @@ Most dotfiles setups end up with one of two problems: config drifts between mach
 | Tool | Role |
 |---|---|
 | [WezTerm](https://wezterm.org/) | Terminal + pane multiplexer, with nvim-aware pane navigation |
-| [Neovim](https://neovim.io/) | Editor, [lazy.nvim](https://github.com/folke/lazy.nvim)-managed, 8-plugin baseline |
+| [Neovim](https://neovim.io/) | Editor, [lazy.nvim](https://github.com/folke/lazy.nvim)-managed |
 | [starship](https://starship.rs/) | Shell prompt |
 | [chezmoi](https://www.chezmoi.io/) | Applies this repo to `$HOME` on any machine, templating OS differences |
 
@@ -72,4 +72,4 @@ chezmoi cat ~/.config/starship.toml  # render one file in isolation
 
 ## Neovim plugins
 
-`lazy.nvim`, `nvim-lspconfig` + `mason.nvim`, `nvim-treesitter`, `blink.cmp`, `telescope.nvim`, `gitsigns.nvim`, `lualine.nvim`, `base16-nvim`. Deliberately small — add what you need as you need it, under `dot_config/nvim/lua/plugins/`, one file per plugin.
+`lazy.nvim`, `nvim-lspconfig` + `mason.nvim`, `nvim-treesitter`, `blink.cmp`, `telescope.nvim`, `gitsigns.nvim`, `lualine.nvim`, `base16-nvim`, `oil.nvim`, `conform.nvim`, `which-key.nvim`. Deliberately small — add what you need as you need it, under `dot_config/nvim/lua/plugins/`, one file per plugin.
