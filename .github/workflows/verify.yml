@@ -30,8 +30,14 @@ jobs:
           # https://github.com/twpayne/chezmoi/issues/3345. Using the data
           # key here silently falls through to an interactive prompt, which
           # fails with "could not open a new TTY" on a CI runner.
+          #
+          # --config must point inside --destination too: chezmoi's verbose
+          # diff output (-v) panics ("X: not in Y") if the config directory
+          # (which defaults to $HOME/.config/chezmoi, outside the scratch
+          # destination) isn't nested under the destination it's diffing.
           "$HOME/.local/bin/chezmoi" init --apply --source="$GITHUB_WORKSPACE" \
             --destination="$RUNNER_TEMP/home" \
+            --config="$RUNNER_TEMP/home/.config/chezmoi/chezmoi.toml" \
             --promptString "Full name for git config=Test,Email for git config=test@example.com" \
             --dry-run -v
         if: runner.os != 'Windows'
@@ -40,9 +46,11 @@ jobs:
         shell: pwsh
         run: |
           New-Item -ItemType Directory -Force "$env:RUNNER_TEMP\home" | Out-Null
-          # See the bash step above for why the key must be the prompt text.
+          # See the bash step above for why the key must be the prompt text
+          # and why --config must be nested under --destination.
           chezmoi init --apply --source="$env:GITHUB_WORKSPACE" `
             --destination="$env:RUNNER_TEMP\home" `
+            --config="$env:RUNNER_TEMP\home\.config\chezmoi\chezmoi.toml" `
             --promptString "Full name for git config=Test,Email for git config=test@example.com" `
             --dry-run -v
         if: runner.os == 'Windows'
