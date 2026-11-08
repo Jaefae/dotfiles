@@ -18,7 +18,11 @@ jobs:
         if: runner.os != 'Windows'
 
       - name: Install chezmoi (Windows)
-        run: winget install twpayne.chezmoi --accept-source-agreements --accept-package-agreements
+        run: |
+          winget install twpayne.chezmoi --accept-source-agreements --accept-package-agreements
+          # winget's user-scope shim dir isn't on PATH for later steps in
+          # the same job unless added to GITHUB_PATH explicitly.
+          echo "$env:LOCALAPPDATA\Microsoft\WinGet\Links" >> $env:GITHUB_PATH
         if: runner.os == 'Windows'
 
       - name: Dry-run apply into a scratch home
