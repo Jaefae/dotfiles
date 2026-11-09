@@ -45,6 +45,26 @@ function M.apply_to_config(config)
 	-- Classic (non-fancy) tab bar colors, since the fancy tab bar ignores
 	-- these and draws from the OS window chrome instead.
 	config.colors = {
+		split = "#{{ $palette.base02 }}",
+		scrollbar_thumb = "#{{ $palette.base02 }}",
+		compose_cursor = "#{{ $palette.base09 }}",
+		visual_bell = "#{{ $palette.base02 }}",
+		-- base16-shell convention: 16 = orange, 17 = brown/misc, for tools that
+		-- address the extra palette slots directly.
+		indexed = {
+			[16] = "#{{ $palette.base09 }}",
+			[17] = "#{{ $palette.base0F }}",
+		},
+		-- QuickSelect (LEADER+g, CTRL+SHIFT+Space) and copy mode default to
+		-- fixed colors that can clash with the theme.
+		quick_select_label_bg = { Color = "#{{ $palette.base0A }}" },
+		quick_select_label_fg = { Color = "#{{ $palette.base00 }}" },
+		quick_select_match_bg = { Color = "#{{ $palette.base02 }}" },
+		quick_select_match_fg = { Color = "#{{ $palette.base05 }}" },
+		copy_mode_active_highlight_bg = { Color = "#{{ $palette.base0A }}" },
+		copy_mode_active_highlight_fg = { Color = "#{{ $palette.base00 }}" },
+		copy_mode_inactive_highlight_bg = { Color = "#{{ $palette.base02 }}" },
+		copy_mode_inactive_highlight_fg = { Color = "#{{ $palette.base05 }}" },
 		tab_bar = {
 			background = "#{{ $palette.base01 }}",
 			active_tab = {

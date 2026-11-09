@@ -6,6 +6,13 @@ if ($gitUsrBin) {
 }
 $env:PATH = "$HOME\.local\bin;$HOME\.cargo\bin;$env:PATH"
 
+# Theme files written by chezmoi from .chezmoidata/ (switch with
+# theme-pick.ps1 or <leader>ft). Both tools re-read them on every run, so a
+# theme switch applies to the next invocation. eza needs the explicit dir:
+# on Windows it would otherwise look in %APPDATA%\eza.
+$env:FZF_DEFAULT_OPTS_FILE = "$HOME\.config\fzf\theme"
+$env:EZA_CONFIG_DIR = "$HOME\.config\eza"
+
 if (Get-Command eza -ErrorAction SilentlyContinue) {
     Remove-Item Alias:ls -ErrorAction SilentlyContinue
     Remove-Item Alias:ll -ErrorAction SilentlyContinue

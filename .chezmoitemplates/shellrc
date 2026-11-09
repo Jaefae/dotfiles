@@ -29,6 +29,14 @@ path_prepend "$HOME/.cargo/bin"
 path_prepend "$HOME/.local/bin"
 export PATH
 
+# Theme files written by chezmoi from .chezmoidata/ (switch with theme-pick
+# or <leader>ft). Both tools re-read them on every run, so a theme switch
+# applies to the next invocation without restarting the shell. eza needs
+# the explicit dir: on macOS it would otherwise look in
+# ~/Library/Application Support.
+export FZF_DEFAULT_OPTS_FILE="$HOME/.config/fzf/theme"
+export EZA_CONFIG_DIR="$HOME/.config/eza"
+
 if command -v eza >/dev/null 2>&1; then
 	alias ls="eza"
 	alias ll="eza -l"

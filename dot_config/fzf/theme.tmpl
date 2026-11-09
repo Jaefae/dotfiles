@@ -1,0 +1,11 @@
+{{- /* fzf options file (FZF_DEFAULT_OPTS_FILE, exported by the shell
+       profiles). fzf re-reads it on every run, so theme switches apply to
+       the next fzf invocation. Generated from the theme in .chezmoidata/;
+       mapping follows tinted-theming's base16 fzf template, with bg left to
+       the terminal (-1) so fzf matches whatever the pane is drawn with. */ -}}
+{{- template "theme-guard" . }}
+{{- $p := (index .themes .current_theme).palette -}}
+--color=bg:-1,bg+:#{{ $p.base01 }},fg:#{{ $p.base04 }},fg+:#{{ $p.base06 }}
+--color=hl:#{{ $p.base0D }},hl+:#{{ $p.base0D }},info:#{{ $p.base0A }},prompt:#{{ $p.base0A }}
+--color=pointer:#{{ $p.base0C }},marker:#{{ $p.base0C }},spinner:#{{ $p.base0C }},header:#{{ $p.base0D }}
+--color=border:#{{ $p.base02 }},separator:#{{ $p.base02 }},scrollbar:#{{ $p.base03 }},query:#{{ $p.base05 }}
