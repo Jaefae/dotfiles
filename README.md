@@ -40,14 +40,15 @@ Both pickers call the shared `theme-sync`/`theme-sync.ps1` script, which persist
 .chezmoiignore                     # OS-conditional file exclusions
 .chezmoiscripts/                   # package install scripts, run once per machine
 dot_config/
-  wezterm/                         # entry point + theme/platform/keys/hyperlinks modules
+  wezterm/                         # entry point + theme/platform/keys/filelinks/hyperlinks modules
   nvim/                            # init.lua, config/, plugins/ (one file per plugin)
   starship.toml.tmpl
 dot_local/bin/                     # theme-sync + theme-pick (fzf), bash and PowerShell
-dot_bashrc.tmpl                    # macOS/Linux shell profile
+dot_bashrc.tmpl                    # macOS/Linux bash profile
+dot_zshrc.tmpl                     # macOS/Linux zsh profile (macOS default shell)
 Documents/PowerShell/...ps1.tmpl   # Windows shell profile
 run_onchange_after_nvim-sync-plugins.sh.tmpl
-.github/workflows/verify.yml       # dry-run apply on macOS/Windows/Linux runners
+.github/workflows/verify.yml       # dry-run apply on macOS/Windows/Linux + filelinks parser test
 ```
 
 ## Setup on a new machine
