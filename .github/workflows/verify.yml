@@ -5,6 +5,15 @@ on:
   pull_request:
 
 jobs:
+  wezterm-filelinks:
+    # Pure-Lua parser behind WezTerm's LEADER+g "open in nvim" QuickSelect;
+    # its self-test runs under plain Lua 5.4 (WezTerm's own Lua version).
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: sudo apt-get install -y lua5.4
+      - run: lua5.4 dot_config/wezterm/filelinks.lua
+
   chezmoi-apply-dry-run:
     strategy:
       matrix:

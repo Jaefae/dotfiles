@@ -2,6 +2,7 @@
 -- flow. Not templated: no per-machine or theme values live here.
 local wezterm = require("wezterm")
 local act = wezterm.action
+local filelinks = require("filelinks")
 
 local M = {}
 
@@ -26,13 +27,156 @@ local function nav_or_passthrough(direction_wez, key_nvim)
 	end)
 end
 
--- QuickSelect: pick a path:line match on screen and open it directly in nvim.
-local function open_selection_in_nvim(window, pane)
-	local selection = window:get_selection_text_for_pane(pane)
-	local path, line = selection:match("([%w./\\-]+):(%d+)")
-	if path then
-		window:perform_action(act.SpawnCommandInNewTab({ args = { "nvim", "+" .. line, path } }), pane)
+-- ---------------------------------------------------------------------------
+-- LEADER+g: QuickSelect a file reference on screen and open it in nvim.
+-- Recognition/parsing lives in filelinks.lua; this part finds nvim and
+-- spawns it.
+-- ---------------------------------------------------------------------------
+
+local IS_WINDOWS = wezterm.target_triple:find("windows") ~= nil
+local SEP = IS_WINDOWS and "\\" or "/"
+local PATH_LIST_SEP = IS_WINDOWS and ";" or ":"
+
+local function file_exists(path)
+	local f = io.open(path, "r")
+	if f then
+		f:close()
+		return true
 	end
+	return false
+end
+
+local function is_dir(path)
+	return (pcall(wezterm.read_dir, path))
+end
+
+local function find_in_path(names, path)
+	for dir in path:gmatch("[^" .. PATH_LIST_SEP .. "]+") do
+		for _, name in ipairs(names) do
+			local candidate = dir .. SEP .. name
+			if file_exists(candidate) then
+				return candidate
+			end
+		end
+	end
+	return nil
+end
+
+-- macOS/Linux: WezTerm launched from the Dock/Finder/a desktop launcher
+-- inherits the session manager's bare PATH (/usr/bin:/bin:...), without
+-- Homebrew or ~/.local/bin. Ask the user's own login+interactive shell for
+-- its PATH once (cached until the config reloads) and give it to nvim, so
+-- nvim and everything it runs (LSP servers, rg, git) resolve exactly as they
+-- do in a normal tab. printf/"$PATH" behave the same in sh, bash, zsh and
+-- fish; the marker skips anything the rc files print.
+local login_path
+
+local function get_login_path()
+	if login_path then
+		return login_path
+	end
+	local shell = os.getenv("SHELL") or "/bin/zsh"
+	local ok, success, stdout = pcall(
+		wezterm.run_child_process,
+		{ shell, "-l", "-i", "-c", 'printf "\\n__WEZTERM_PATH__=%s\\n" "$PATH"' }
+	)
+	local found = ok and success and stdout and stdout:match("__WEZTERM_PATH__=([^\n]*)")
+	if found and found ~= "" then
+		login_path = found
+	else
+		wezterm.log_warn("open-in-nvim: couldn't read PATH from " .. shell .. "; using fallback dirs")
+		login_path = table.concat({
+			wezterm.home_dir .. "/.local/bin",
+			"/opt/homebrew/bin",
+			"/usr/local/bin",
+			os.getenv("PATH") or "/usr/bin:/bin",
+		}, ":")
+	end
+	return login_path
+end
+
+-- Returns (nvim executable, extra env) or nil if nvim can't be found.
+local function locate_nvim()
+	if IS_WINDOWS then
+		-- GUI apps on Windows get the full registry PATH, but it can be stale
+		-- if nvim was installed after WezTerm started, so also check the
+		-- default install locations (official MSI, winget/scoop shims).
+		local local_app_data = os.getenv("LOCALAPPDATA") or ""
+		local search = table.concat({
+			os.getenv("PATH") or "",
+			(os.getenv("ProgramFiles") or "C:\\Program Files") .. "\\Neovim\\bin",
+			local_app_data .. "\\Microsoft\\WinGet\\Links",
+			wezterm.home_dir .. "\\scoop\\shims",
+		}, ";")
+		return find_in_path({ "nvim.exe", "nvim.cmd", "nvim.bat" }, search), nil
+	end
+	local path = get_login_path()
+	return find_in_path({ "nvim" }, path), { PATH = path }
+end
+
+local function notify(window, message)
+	wezterm.log_warn("open-in-nvim: " .. message)
+	window:toast_notification("WezTerm", message, nil, 4000)
+end
+
+local function open_selection_in_nvim(window, pane)
+	local target = filelinks.parse(window:get_selection_text_for_pane(pane))
+	if not target then
+		return
+	end
+	if target.url then
+		wezterm.open_with(target.url)
+		return
+	end
+
+	-- Relative paths (the norm in compiler/grep output) resolve against the
+	-- originating pane's cwd, not the new tab's default cwd.
+	local ok, raw_cwd = pcall(function()
+		return pane:get_current_working_dir()
+	end)
+	local cwd = ok and filelinks.cwd_to_path(raw_cwd) or nil
+
+	-- `git diff` headers print paths as a/<path> and b/<path>.
+	local candidates = { target.path }
+	local unprefixed = target.path:match("^[ab][/\\](.+)$")
+	if unprefixed then
+		table.insert(candidates, unprefixed)
+	end
+	local full
+	for _, candidate in ipairs(candidates) do
+		local resolved = filelinks.resolve(candidate, cwd, wezterm.home_dir, SEP)
+		if file_exists(resolved) or is_dir(resolved) then
+			full = resolved
+			break
+		end
+	end
+	if not full then
+		notify(window, "No such file: " .. target.path .. (cwd and (" (from " .. cwd .. ")") or ""))
+		return
+	end
+
+	local nvim, env = locate_nvim()
+	if not nvim then
+		notify(window, "Couldn't find nvim on PATH")
+		return
+	end
+
+	local args = { nvim }
+	if target.line and target.col then
+		table.insert(args, string.format("+call cursor(%d,%d)", target.line, target.col))
+	elseif target.line then
+		table.insert(args, "+" .. target.line)
+	end
+	table.insert(args, full)
+
+	window:perform_action(
+		act.SpawnCommandInNewTab({
+			args = args,
+			cwd = cwd,
+			set_environment_variables = env,
+		}),
+		pane
+	)
 end
 
 -- Held down after LEADER+r: hjkl keep resizing the current pane until
@@ -75,7 +219,7 @@ function M.apply_to_config(config)
 			mods = "LEADER",
 			action = act.QuickSelectArgs({
 				label = "open in nvim",
-				patterns = { "[\\w./\\-]+:\\d+" },
+				patterns = filelinks.patterns,
 				action = wezterm.action_callback(open_selection_in_nvim),
 			}),
 		},

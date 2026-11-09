@@ -14,7 +14,7 @@ require("statusbar").apply_to_config(config)
 -- WezTerm only auto-reloads on changes to this file; required modules
 -- (theme.lua in particular, rewritten live by the theme picker) need to be
 -- added to the watch list explicitly to get the same live-reload behavior.
-for _, name in ipairs({ "theme.lua", "platform.lua", "keys.lua", "hyperlinks.lua", "statusbar.lua" }) do
+for _, name in ipairs({ "theme.lua", "platform.lua", "keys.lua", "filelinks.lua", "hyperlinks.lua", "statusbar.lua" }) do
 	wezterm.add_to_config_reload_watch_list(wezterm.config_dir .. "/" .. name)
 end
 
