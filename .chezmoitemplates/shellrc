@@ -1,0 +1,43 @@
+{{- /* Shared body of dot_bashrc.tmpl and dot_zshrc.tmpl, included as
+       {{ template "shellrc" "zsh" }}: the argument is the shell name, used
+       for the starship/zoxide init calls. POSIX sh syntax only, so it reads
+       the same in bash and zsh. */ -}}
+{{- $shell := . -}}
+# Managed by chezmoi — shared body in .chezmoitemplates/shellrc.
+
+# Prepends a directory to PATH once, so nested shells don't keep growing it.
+path_prepend() {
+	case ":$PATH:" in
+		*":$1:"*) ;;
+		*) PATH="$1:$PATH" ;;
+	esac
+}
+
+# Homebrew: a fresh machine may not have `brew shellenv` in ~/.zprofile
+# yet (and bash never reads that file), so pick it up here if brew exists
+# but isn't on PATH.
+if ! command -v brew >/dev/null 2>&1; then
+	for brew in /opt/homebrew/bin/brew /usr/local/bin/brew /home/linuxbrew/.linuxbrew/bin/brew; do
+		if [ -x "$brew" ]; then
+			eval "$("$brew" shellenv)"
+			break
+		fi
+	done
+fi
+
+path_prepend "$HOME/.cargo/bin"
+path_prepend "$HOME/.local/bin"
+export PATH
+
+if command -v eza >/dev/null 2>&1; then
+	alias ls="eza"
+	alias ll="eza -l"
+fi
+
+if command -v starship >/dev/null 2>&1; then
+	eval "$(starship init {{ $shell }})"
+fi
+
+if command -v zoxide >/dev/null 2>&1; then
+	eval "$(zoxide init {{ $shell }})"
+fi
