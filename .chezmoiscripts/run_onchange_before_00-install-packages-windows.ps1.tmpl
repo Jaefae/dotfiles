@@ -1,0 +1,99 @@
+{{ if eq .chezmoi.os "windows" -}}
+# Installs the tools and fonts this config depends on. chezmoi re-runs this
+# whenever its contents change (run_onchange_). Works under Windows
+# PowerShell 5.1 and PowerShell 7.
+$ErrorActionPreference = "Stop"
+[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+
+$packages = @(
+    "twpayne.chezmoi",
+    "wez.wezterm",
+    "Neovim.Neovim",
+    "Starship.Starship",
+    "ajeetdsouza.zoxide",
+    "eza-community.eza",
+    "sharkdp.fd",
+    "BurntSushi.ripgrep.MSVC",
+    "Git.Git",
+    "junegunn.fzf",
+    "Microsoft.PowerShell"
+)
+
+# winget exit codes that mean "nothing to do", not failure.
+$alreadyInstalled = @(
+    -1978335189, # 0x8A15002B: no applicable upgrade
+    -1978335135  # 0x8A150061: package already installed
+)
+
+$failed = @()
+foreach ($pkg in $packages) {
+    winget install --id $pkg --exact --silent --accept-source-agreements --accept-package-agreements
+    if ($LASTEXITCODE -ne 0 -and $alreadyInstalled -notcontains $LASTEXITCODE) {
+        $failed += "$pkg (exit $LASTEXITCODE)"
+    }
+}
+
+# Fonts referenced by dot_config/wezterm/wezterm.lua.tmpl. Neither is in
+# winget, so install them per-user from their GitHub releases (no admin
+# needed): copy into %LOCALAPPDATA%\Microsoft\Windows\Fonts and register
+# under HKCU.
+function Install-FontZip {
+    param([string]$Name, [string]$Url, [string]$FilePattern)
+
+    $fontDir = Join-Path $env:LOCALAPPDATA "Microsoft\Windows\Fonts"
+    $installed = @(Get-ChildItem -LiteralPath $fontDir -File -ErrorAction SilentlyContinue | Where-Object { $_.Name -like $FilePattern }) +
+        @(Get-ChildItem -LiteralPath (Join-Path $env:WINDIR "Fonts") -File -ErrorAction SilentlyContinue | Where-Object { $_.Name -like $FilePattern })
+    if ($installed.Count -gt 0) {
+        Write-Output "$Name already installed"
+        return
+    }
+
+    New-Item -ItemType Directory -Force -Path $fontDir | Out-Null
+    $regPath = "HKCU:\Software\Microsoft\Windows NT\CurrentVersion\Fonts"
+    $tmp = Join-Path ([System.IO.Path]::GetTempPath()) ("font-" + [guid]::NewGuid())
+    New-Item -ItemType Directory -Path $tmp | Out-Null
+    try {
+        $zip = Join-Path $tmp "font.zip"
+        Invoke-WebRequest -Uri $Url -OutFile $zip -UseBasicParsing
+        Expand-Archive -LiteralPath $zip -DestinationPath $tmp
+        $fonts = @(Get-ChildItem -LiteralPath $tmp -Recurse -File |
+            Where-Object { ($_.Extension -eq ".otf" -or $_.Extension -eq ".ttf") -and $_.Name -like $FilePattern })
+        if ($fonts.Count -eq 0) {
+            throw "no font files matching $FilePattern in $Url"
+        }
+        foreach ($font in $fonts) {
+            $dest = Join-Path $fontDir $font.Name
+            Copy-Item -LiteralPath $font.FullName -Destination $dest -Force
+            $type = if ($font.Extension -eq ".otf") { "OpenType" } else { "TrueType" }
+            New-ItemProperty -Path $regPath -Name "$($font.BaseName) ($type)" -Value $dest -PropertyType String -Force | Out-Null
+        }
+        Write-Output "Installed $Name ($($fonts.Count) files)"
+    } finally {
+        Remove-Item -LiteralPath $tmp -Recurse -Force -ErrorAction SilentlyContinue
+    }
+}
+
+try {
+    $release = Invoke-RestMethod -Uri "https://api.github.com/repos/githubnext/monaspace/releases/latest" -UseBasicParsing
+    $asset = $release.assets | Where-Object { $_.name -like "monaspace-static-v*.zip" } | Select-Object -First 1
+    if (-not $asset) { throw "no monaspace-static zip in release $($release.tag_name)" }
+    Install-FontZip -Name "Monaspace" -Url $asset.browser_download_url -FilePattern "Monaspace*"
+} catch {
+    $failed += "Monaspace font ($($_.Exception.Message))"
+}
+try {
+    Install-FontZip -Name "Symbols Nerd Font" -FilePattern "SymbolsNerdFontMono*" `
+        -Url "https://github.com/ryanoasis/nerd-fonts/releases/latest/download/NerdFontsSymbolsOnly.zip"
+} catch {
+    $failed += "Symbols Nerd Font ($($_.Exception.Message))"
+}
+
+# Unify config resolution across OSes: let WezTerm/Neovim/starship all read
+# from %USERPROFILE%\.config on Windows too, same as macOS/Linux.
+[Environment]::SetEnvironmentVariable("XDG_CONFIG_HOME", "$env:USERPROFILE\.config", "User")
+
+if ($failed.Count -gt 0) {
+    Write-Error ("install-packages: these failed to install:`n  " + ($failed -join "`n  "))
+    exit 1
+}
+{{ end -}}

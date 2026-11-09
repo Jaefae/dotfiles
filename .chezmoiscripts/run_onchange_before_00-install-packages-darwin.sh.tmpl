@@ -1,0 +1,22 @@
+#!/bin/bash
+{{ if eq .chezmoi.os "darwin" -}}
+# Installs everything in the repo's Brewfile. chezmoi re-runs this whenever
+# the Brewfile changes (run_onchange_, keyed on the hash below).
+# Brewfile hash: {{ include "Brewfile" | sha256sum }}
+set -euo pipefail
+
+brew="$(command -v brew || true)"
+for candidate in /opt/homebrew/bin/brew /usr/local/bin/brew; do
+	if [ -z "$brew" ] && [ -x "$candidate" ]; then
+		brew="$candidate"
+	fi
+done
+if [ -z "$brew" ]; then
+	echo "install-packages: Homebrew is not installed. Install it from https://brew.sh, then re-run 'chezmoi apply'." >&2
+	exit 1
+fi
+
+# --no-upgrade: install what's missing without upgrading everything else on
+# every apply. Failures are reported (and fail the apply) rather than hidden.
+"$brew" bundle install --no-upgrade --file={{ joinPath .chezmoi.sourceDir "Brewfile" | quote }}
+{{ end -}}

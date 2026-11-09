@@ -1,6 +1,7 @@
 # Repo files that aren't dotfiles: keep them out of $HOME.
 README.md
 lazy-lock.json
+Brewfile
 
 {{ if ne .chezmoi.os "windows" }}
 Documents/PowerShell/Microsoft.PowerShell_profile.ps1
