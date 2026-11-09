@@ -1,0 +1,33 @@
+themes:
+  oxocarbon-dark:
+    name: "Oxocarbon Dark"
+    variant: "dark"
+    palette:
+      # From tinted-theming's oxocarbon-dark (by shaunsingh/IBM).
+      # No upstream bright-ANSI set, so base10-17 fall back to aliasing per the rule above.
+      # base07 = white instead of teal 08bdba, since base07 is WezTerm's
+      # bright white.
+      base00: "161616" # bg
+      base01: "262626" # bg alt
+      base02: "393939" # selection bg
+      base03: "525252" # comment / muted fg
+      base04: "dde1e6" # dim fg / line numbers
+      base05: "f2f4f8" # fg
+      base06: "ffffff" # bright fg
+      base07: "ffffff" # brightest fg
+      base08: "ee5396" # red
+      base09: "ff7eb6" # orange
+      base0A: "ff6f00" # yellow
+      base0B: "42be65" # green
+      base0C: "3ddbd9" # cyan
+      base0D: "33b1ff" # blue
+      base0E: "be95ff" # magenta
+      base0F: "82cfff" # brown / misc
+      base10: "525252" # ansi bright black (= base03)
+      base11: "ffffff" # ansi bright white/grey (= base07)
+      base12: "ee5396" # ansi bright red (= base08)
+      base13: "ff6f00" # ansi bright yellow (= base0A)
+      base14: "42be65" # ansi bright green (= base0B)
+      base15: "3ddbd9" # ansi bright cyan (= base0C)
+      base16: "33b1ff" # ansi bright blue (= base0D)
+      base17: "be95ff" # ansi bright magenta (= base0E)

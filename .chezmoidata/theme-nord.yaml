@@ -1,0 +1,33 @@
+themes:
+  nord:
+    name: "Nord"
+    variant: "dark"
+    palette:
+      # From tinted-theming's nord (by arcticicestudio, the scheme's author).
+      # No upstream bright-ANSI set, so base10-17 fall back to aliasing per the rule above.
+      # base07 = nord6 (eceff4) instead of frost nord7 (8fbcbb), since base07
+      # is WezTerm's bright white; nord6 is Nord's official bright white.
+      base00: "2e3440" # bg
+      base01: "3b4252" # bg alt
+      base02: "434c5e" # selection bg
+      base03: "4c566a" # comment / muted fg
+      base04: "d8dee9" # dim fg / line numbers
+      base05: "e5e9f0" # fg
+      base06: "eceff4" # bright fg
+      base07: "eceff4" # brightest fg
+      base08: "bf616a" # red
+      base09: "d08770" # orange
+      base0A: "ebcb8b" # yellow
+      base0B: "a3be8c" # green
+      base0C: "88c0d0" # cyan
+      base0D: "81a1c1" # blue
+      base0E: "b48ead" # magenta
+      base0F: "5e81ac" # brown / misc
+      base10: "4c566a" # ansi bright black (= base03)
+      base11: "eceff4" # ansi bright white/grey (= base07)
+      base12: "bf616a" # ansi bright red (= base08)
+      base13: "ebcb8b" # ansi bright yellow (= base0A)
+      base14: "a3be8c" # ansi bright green (= base0B)
+      base15: "88c0d0" # ansi bright cyan (= base0C)
+      base16: "81a1c1" # ansi bright blue (= base0D)
+      base17: "b48ead" # ansi bright magenta (= base0E)

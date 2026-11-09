@@ -1,0 +1,35 @@
+themes:
+  molokai:
+    name: "Molokai"
+    variant: "dark"
+    palette:
+      # No faithful base16 upstream (tinted-theming's molokai is a different
+      # iTerm scheme). Derived from tomasr/molokai's colors/molokai.vim default
+      # variant: Normal/CursorLine/Visual/Comment/LineNr for base00-04, its
+      # GUI accents for base08-0E. Molokai has one fg and uses one blue for
+      # both cyan and blue. Stands in for ku1ik/vim-monokai as well.
+      # No upstream bright-ANSI set, so base10-17 fall back to aliasing per the rule above.
+      base00: "1b1d1e" # bg
+      base01: "293739" # bg alt
+      base02: "403d3d" # selection bg
+      base03: "7e8e91" # comment / muted fg
+      base04: "465457" # dim fg / line numbers
+      base05: "f8f8f2" # fg
+      base06: "f8f8f2" # bright fg
+      base07: "f8f8f2" # brightest fg
+      base08: "f92672" # red
+      base09: "fd971f" # orange
+      base0A: "e6db74" # yellow
+      base0B: "a6e22e" # green
+      base0C: "66d9ef" # cyan
+      base0D: "66d9ef" # blue
+      base0E: "ae81ff" # magenta
+      base0F: "fd971f" # brown / misc
+      base10: "7e8e91" # ansi bright black (= base03)
+      base11: "f8f8f2" # ansi bright white/grey (= base07)
+      base12: "f92672" # ansi bright red (= base08)
+      base13: "e6db74" # ansi bright yellow (= base0A)
+      base14: "a6e22e" # ansi bright green (= base0B)
+      base15: "66d9ef" # ansi bright cyan (= base0C)
+      base16: "66d9ef" # ansi bright blue (= base0D)
+      base17: "ae81ff" # ansi bright magenta (= base0E)

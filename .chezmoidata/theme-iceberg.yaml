@@ -1,0 +1,35 @@
+themes:
+  iceberg:
+    name: "Iceberg"
+    variant: "dark"
+    palette:
+      # No published base16 upstream. Derived from cocopon/iceberg.vim's
+      # colors/iceberg.vim (dark): Normal/CursorLine/Visual/Comment/LineNr for
+      # base00-04, g:terminal_ansi_colors for the accents (Iceberg has no pure
+      # yellow, so base0A is its bright yellow, a light orange).
+      # base12-17 from the same g:terminal_ansi_colors brights; base10/11 =
+      # base03/07 per this repo's slot convention.
+      base00: "161821" # bg
+      base01: "1e2132" # bg alt
+      base02: "272c42" # selection bg
+      base03: "6b7089" # comment / muted fg
+      base04: "444b71" # dim fg / line numbers
+      base05: "c6c8d1" # fg
+      base06: "d2d4de" # bright fg
+      base07: "e8e9ec" # brightest fg
+      base08: "e27878" # red
+      base09: "e2a478" # orange
+      base0A: "e9b189" # yellow
+      base0B: "b4be82" # green
+      base0C: "89b8c2" # cyan
+      base0D: "84a0c6" # blue
+      base0E: "a093c7" # magenta
+      base0F: "e98989" # brown / misc
+      base10: "6b7089" # ansi bright black (= base03)
+      base11: "e8e9ec" # ansi bright white/grey (= base07)
+      base12: "e98989" # ansi bright red
+      base13: "e9b189" # ansi bright yellow
+      base14: "c0ca8e" # ansi bright green
+      base15: "95c4ce" # ansi bright cyan
+      base16: "91acd1" # ansi bright blue
+      base17: "ada0d3" # ansi bright magenta

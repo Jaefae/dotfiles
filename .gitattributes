@@ -1,0 +1,7 @@
+# Normalize to LF everywhere, including on Windows checkouts: chezmoi writes
+# targets byte-for-byte from the source, and PowerShell 7 reads LF scripts
+# fine, so CRLF would only cause spurious diffs.
+* text=auto eol=lf
+
+*.png binary
+*.jpg binary

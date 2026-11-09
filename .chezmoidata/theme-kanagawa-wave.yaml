@@ -1,0 +1,33 @@
+themes:
+  kanagawa-wave:
+    name: "Kanagawa Wave"
+    variant: "dark"
+    palette:
+      # From tinted-theming's kanagawa (by rebelot, the scheme's author), with
+      # base07 raised to the official bright white (tinted's 717c7c is darker
+      # than fg, and base07 is WezTerm's bright white). base10-17 from
+      # rebelot/kanagawa.nvim's extras/alacritty_kanagawa.toml brights.
+      base00: "1f1f28" # bg
+      base01: "16161d" # bg alt
+      base02: "223249" # selection bg
+      base03: "54546d" # comment / muted fg
+      base04: "727169" # dim fg / line numbers
+      base05: "dcd7ba" # fg
+      base06: "c8c093" # bright fg
+      base07: "dcd7ba" # brightest fg
+      base08: "c34043" # red
+      base09: "ffa066" # orange
+      base0A: "c0a36e" # yellow
+      base0B: "76946a" # green
+      base0C: "6a9589" # cyan
+      base0D: "7e9cd8" # blue
+      base0E: "957fb8" # magenta
+      base0F: "d27e99" # brown / misc
+      base10: "727169" # ansi bright black
+      base11: "dcd7ba" # ansi bright white/grey (= base07)
+      base12: "e82424" # ansi bright red
+      base13: "e6c384" # ansi bright yellow
+      base14: "98bb6c" # ansi bright green
+      base15: "7aa89f" # ansi bright cyan
+      base16: "7fb4ca" # ansi bright blue
+      base17: "938aa9" # ansi bright magenta

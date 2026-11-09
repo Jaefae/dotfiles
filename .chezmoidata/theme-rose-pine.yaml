@@ -1,0 +1,36 @@
+themes:
+  rose-pine:
+    name: "Rosé Pine"
+    variant: "dark"
+    palette:
+      # Greys (base00-06) from tinted-theming's rose-pine (by Emilia Dunfelt).
+      # Its accents are role-mapped (base0B pine, base0E gold), so base08-0E
+      # follow rose-pine/alacritty's official ANSI mapping instead: red=love,
+      # yellow=gold, green=pine, cyan=rose, blue=foam, magenta=iris (Rosé Pine
+      # has no orange; base09 is rose). base07 raised to text e0def4, the
+      # official bright white. Upstream brights equal its normal colors, so
+      # base10-17 alias per the rule above.
+      base00: "191724" # bg
+      base01: "1f1d2e" # bg alt
+      base02: "26233a" # selection bg
+      base03: "6e6a86" # comment / muted fg
+      base04: "908caa" # dim fg / line numbers
+      base05: "e0def4" # fg
+      base06: "e0def4" # bright fg
+      base07: "e0def4" # brightest fg
+      base08: "eb6f92" # red
+      base09: "ebbcba" # orange
+      base0A: "f6c177" # yellow
+      base0B: "31748f" # green
+      base0C: "ebbcba" # cyan
+      base0D: "9ccfd8" # blue
+      base0E: "c4a7e7" # magenta
+      base0F: "524f67" # brown / misc
+      base10: "6e6a86" # ansi bright black (= base03)
+      base11: "e0def4" # ansi bright white/grey (= base07)
+      base12: "eb6f92" # ansi bright red (= base08)
+      base13: "f6c177" # ansi bright yellow (= base0A)
+      base14: "31748f" # ansi bright green (= base0B)
+      base15: "ebbcba" # ansi bright cyan (= base0C)
+      base16: "9ccfd8" # ansi bright blue (= base0D)
+      base17: "c4a7e7" # ansi bright magenta (= base0E)

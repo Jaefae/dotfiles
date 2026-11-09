@@ -1,0 +1,7 @@
+{{- /* Included at the top of every themed template. Fails the render with a
+       readable message (instead of Go's "nil pointer evaluating .palette")
+       when current_theme names a theme that doesn't exist. theme-sync also
+       finds themed templates by looking for this include. */ -}}
+{{- if not (hasKey .themes .current_theme) -}}
+{{-   fail (printf "unknown theme %q: there is no .chezmoidata/theme-%s.yaml (known themes: %s)" .current_theme .current_theme (keys .themes | sortAlpha | join ", ")) -}}
+{{- end -}}

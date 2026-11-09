@@ -1,0 +1,32 @@
+themes:
+  gruvbox-dark:
+    name: "Gruvbox Dark"
+    variant: "dark"
+    palette:
+      # From tinted-theming/base16-gruvbox-scheme's "dark-medium" variant.
+      # No separate upstream bright-ANSI set exists, so base10-17 fall back
+      # to aliasing the matching base0X slot per the rule above.
+      base00: "282828" # bg
+      base01: "3c3836" # bg alt
+      base02: "504945" # selection bg
+      base03: "665c54" # comment / muted fg
+      base04: "bdae93" # dim fg
+      base05: "d5c4a1" # fg
+      base06: "ebdbb2" # bright fg
+      base07: "fbf1c7" # brightest fg
+      base08: "fb4934" # red
+      base09: "fe8019" # orange
+      base0A: "fabd2f" # yellow
+      base0B: "b8bb26" # green
+      base0C: "8ec07c" # cyan/aqua
+      base0D: "83a598" # blue
+      base0E: "d3869b" # magenta/purple
+      base0F: "d65d0e" # brown
+      base10: "665c54" # ansi bright black (= base03)
+      base11: "fbf1c7" # ansi bright white/grey (= base07)
+      base12: "fb4934" # ansi bright red (= base08)
+      base13: "fabd2f" # ansi bright yellow (= base0A)
+      base14: "b8bb26" # ansi bright green (= base0B)
+      base15: "8ec07c" # ansi bright cyan (= base0C)
+      base16: "83a598" # ansi bright blue (= base0D)
+      base17: "d3869b" # ansi bright magenta (= base0E)

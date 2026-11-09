@@ -1,0 +1,35 @@
+themes:
+  hybrid:
+    name: "Hybrid"
+    variant: "dark"
+    palette:
+      # No faithful base16 upstream (tinted-theming's hybrid is a different
+      # iTerm scheme). Derived from w0ng/vim-hybrid's colors/hybrid.vim dark
+      # palette: background/line/selection/comment for base00-03, LineNr
+      # (selection) for base04. Hybrid has one fg, so base05-07 repeat. Its
+      # GUI accents are its terminal brights, so base10-17 alias per the rule
+      # above.
+      base00: "1d1f21" # bg
+      base01: "282a2e" # bg alt
+      base02: "373b41" # selection bg
+      base03: "707880" # comment / muted fg
+      base04: "373b41" # dim fg / line numbers
+      base05: "c5c8c6" # fg
+      base06: "c5c8c6" # bright fg
+      base07: "c5c8c6" # brightest fg
+      base08: "cc6666" # red
+      base09: "de935f" # orange
+      base0A: "f0c674" # yellow
+      base0B: "b5bd68" # green
+      base0C: "8abeb7" # cyan
+      base0D: "81a2be" # blue
+      base0E: "b294bb" # magenta
+      base0F: "cc6666" # brown / misc
+      base10: "707880" # ansi bright black (= base03)
+      base11: "c5c8c6" # ansi bright white/grey (= base07)
+      base12: "cc6666" # ansi bright red (= base08)
+      base13: "f0c674" # ansi bright yellow (= base0A)
+      base14: "b5bd68" # ansi bright green (= base0B)
+      base15: "8abeb7" # ansi bright cyan (= base0C)
+      base16: "81a2be" # ansi bright blue (= base0D)
+      base17: "b294bb" # ansi bright magenta (= base0E)

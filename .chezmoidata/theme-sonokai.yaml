@@ -1,0 +1,34 @@
+themes:
+  sonokai:
+    name: "Sonokai"
+    variant: "dark"
+    palette:
+      # No published base16 upstream. Derived from sainnhe/sonokai's 'default'
+      # palette (autoload/sonokai.vim): bg0/bg1/bg4 (Visual)/grey (Comment)/
+      # grey_dim (LineNr) for base00-04. Sonokai has a single fg and a single
+      # blue, so base05-07 and base0C/0D repeat. Upstream's terminal brights
+      # equal its normal colors, so base10-17 alias per the rule above.
+      base00: "2c2e34" # bg
+      base01: "33353f" # bg alt
+      base02: "414550" # selection bg
+      base03: "7f8490" # comment / muted fg
+      base04: "595f6f" # dim fg / line numbers
+      base05: "e2e2e3" # fg
+      base06: "e2e2e3" # bright fg
+      base07: "e2e2e3" # brightest fg
+      base08: "fc5d7c" # red
+      base09: "f39660" # orange
+      base0A: "e7c664" # yellow
+      base0B: "9ed072" # green
+      base0C: "76cce0" # cyan
+      base0D: "76cce0" # blue
+      base0E: "b39df3" # magenta
+      base0F: "ff6077" # brown / misc
+      base10: "7f8490" # ansi bright black (= base03)
+      base11: "e2e2e3" # ansi bright white/grey (= base07)
+      base12: "fc5d7c" # ansi bright red (= base08)
+      base13: "e7c664" # ansi bright yellow (= base0A)
+      base14: "9ed072" # ansi bright green (= base0B)
+      base15: "76cce0" # ansi bright cyan (= base0C)
+      base16: "76cce0" # ansi bright blue (= base0D)
+      base17: "b39df3" # ansi bright magenta (= base0E)

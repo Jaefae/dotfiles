@@ -1,0 +1,35 @@
+themes:
+  everforest-dark:
+    name: "Everforest Dark"
+    variant: "dark"
+    palette:
+      # From tinted-theming's everforest-dark-medium (by sainnhe, the scheme's author).
+      # No upstream bright-ANSI set, so base10-17 fall back to aliasing per the rule above.
+      # That file puts the real fg (d3c6aa) in base07 and greys in base03-06,
+      # but base16-nvim draws Normal text in base05 and comments in base03, so
+      # base05/06 = fg and base03/04 = Everforest's own grey1 (comments) /
+      # grey0, matching autoload/everforest.vim.
+      base00: "2d353b" # bg
+      base01: "343f44" # bg alt
+      base02: "3d484d" # selection bg
+      base03: "859289" # comment / muted fg
+      base04: "7a8478" # dim fg / line numbers
+      base05: "d3c6aa" # fg
+      base06: "d3c6aa" # bright fg
+      base07: "d3c6aa" # brightest fg
+      base08: "e67e80" # red
+      base09: "e69875" # orange
+      base0A: "dbbc7f" # yellow
+      base0B: "a7c080" # green
+      base0C: "83c092" # cyan
+      base0D: "7fbbb3" # blue
+      base0E: "d699b6" # magenta
+      base0F: "514045" # brown / misc
+      base10: "859289" # ansi bright black (= base03)
+      base11: "d3c6aa" # ansi bright white/grey (= base07)
+      base12: "e67e80" # ansi bright red (= base08)
+      base13: "dbbc7f" # ansi bright yellow (= base0A)
+      base14: "a7c080" # ansi bright green (= base0B)
+      base15: "83c092" # ansi bright cyan (= base0C)
+      base16: "7fbbb3" # ansi bright blue (= base0D)
+      base17: "d699b6" # ansi bright magenta (= base0E)

@@ -1,0 +1,34 @@
+themes:
+  tokyonight-night:
+    name: "Tokyo Night"
+    variant: "dark"
+    palette:
+      # From folke/tokyonight.nvim's own 'night' palette (lua/tokyonight/colors)
+      # and extras/wezterm/tokyonight_night.toml. tinted-theming's base16 port
+      # is role-mapped (base08 lavender, base0A cyan), which would scramble the
+      # terminal's ANSI colors. base06/07 from that port's light greys.
+      # base10-17 from the official WezTerm extra's brights.
+      base00: "1a1b26" # bg
+      base01: "16161e" # bg alt
+      base02: "283457" # selection bg
+      base03: "565f89" # comment / muted fg
+      base04: "3b4261" # dim fg / line numbers
+      base05: "c0caf5" # fg
+      base06: "cbccd1" # bright fg
+      base07: "d5d6db" # brightest fg
+      base08: "f7768e" # red
+      base09: "ff9e64" # orange
+      base0A: "e0af68" # yellow
+      base0B: "9ece6a" # green
+      base0C: "7dcfff" # cyan
+      base0D: "7aa2f7" # blue
+      base0E: "bb9af7" # magenta
+      base0F: "db4b4b" # brown / misc
+      base10: "414868" # ansi bright black
+      base11: "d5d6db" # ansi bright white/grey (= base07)
+      base12: "ff899d" # ansi bright red
+      base13: "faba4a" # ansi bright yellow
+      base14: "9fe044" # ansi bright green
+      base15: "a4daff" # ansi bright cyan
+      base16: "8db0ff" # ansi bright blue
+      base17: "c7a9ff" # ansi bright magenta

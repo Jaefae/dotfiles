@@ -1,0 +1,32 @@
+themes:
+  ayu-dark:
+    name: "Ayu Dark"
+    variant: "dark"
+    palette:
+      # From tinted-theming's ayu-dark (base16, with the Ayu Theme authors).
+      # base12-17 from the same authors' base24 ayu-dark;
+      # base10/11 = base03/07 per this repo's slot convention.
+      base00: "0b0e14" # bg
+      base01: "131721" # bg alt
+      base02: "202229" # selection bg
+      base03: "3e4b59" # comment / muted fg
+      base04: "bfbdb6" # dim fg / line numbers
+      base05: "e6e1cf" # fg
+      base06: "ece8db" # bright fg
+      base07: "f2f0e7" # brightest fg
+      base08: "f07178" # red
+      base09: "ff8f40" # orange
+      base0A: "ffb454" # yellow
+      base0B: "aad94c" # green
+      base0C: "95e6cb" # cyan
+      base0D: "59c2ff" # blue
+      base0E: "d2a6ff" # magenta
+      base0F: "e6b450" # brown / misc
+      base10: "3e4b59" # ansi bright black (= base03)
+      base11: "f2f0e7" # ansi bright white/grey (= base07)
+      base12: "f26d78" # ansi bright red
+      base13: "e6b673" # ansi bright yellow
+      base14: "7fd962" # ansi bright green
+      base15: "39bae6" # ansi bright cyan
+      base16: "73b8ff" # ansi bright blue
+      base17: "ddbcff" # ansi bright magenta

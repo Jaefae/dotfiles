@@ -1,0 +1,32 @@
+themes:
+  jellybeans:
+    name: "Jellybeans"
+    variant: "dark"
+    palette:
+      # From tinted-theming's jellybeans (base16).
+      # base12-17 from base24 jellybeans (the base16 file's source);
+      # base10/11 = base03/07 per this repo's slot convention.
+      base00: "121212" # bg
+      base01: "929292" # bg alt
+      base02: "bdbdbd" # selection bg
+      base03: "c5c5c5" # comment / muted fg
+      base04: "cdcdcd" # dim fg / line numbers
+      base05: "d5d5d5" # fg
+      base06: "dedede" # bright fg
+      base07: "ffffff" # brightest fg
+      base08: "ffa1a1" # red
+      base09: "ffba7b" # orange
+      base0A: "ffdca0" # yellow
+      base0B: "bddeab" # green
+      base0C: "1ab2a8" # cyan
+      base0D: "b1d8f6" # blue
+      base0E: "fbdaff" # magenta
+      base0F: "713939" # brown / misc
+      base10: "c5c5c5" # ansi bright black (= base03)
+      base11: "ffffff" # ansi bright white/grey (= base07)
+      base12: "ffa1a1" # ansi bright red
+      base13: "ffdca0" # ansi bright yellow
+      base14: "bddeab" # ansi bright green
+      base15: "1ab2a8" # ansi bright cyan
+      base16: "b1d8f6" # ansi bright blue
+      base17: "fbdaff" # ansi bright magenta

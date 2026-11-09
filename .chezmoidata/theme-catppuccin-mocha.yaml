@@ -1,0 +1,31 @@
+themes:
+  catppuccin-mocha:
+    name: "Catppuccin Mocha"
+    variant: "dark"
+    palette:
+      # From catppuccin/base16's mocha.yaml. No upstream bright-ANSI set,
+      # so base10-17 fall back to aliasing per the rule above.
+      base00: "1e1e2e" # bg
+      base01: "181825" # bg alt
+      base02: "313244" # selection bg
+      base03: "45475a" # comment / muted fg
+      base04: "585b70" # dim fg
+      base05: "cdd6f4" # fg
+      base06: "f5e0dc" # bright fg
+      base07: "b4befe" # brightest fg
+      base08: "f38ba8" # red
+      base09: "fab387" # orange
+      base0A: "f9e2af" # yellow
+      base0B: "a6e3a1" # green
+      base0C: "94e2d5" # cyan
+      base0D: "89b4fa" # blue
+      base0E: "cba6f7" # magenta
+      base0F: "f2cdcd" # brown slot (flamingo)
+      base10: "45475a" # ansi bright black (= base03)
+      base11: "b4befe" # ansi bright white/grey (= base07)
+      base12: "f38ba8" # ansi bright red (= base08)
+      base13: "f9e2af" # ansi bright yellow (= base0A)
+      base14: "a6e3a1" # ansi bright green (= base0B)
+      base15: "94e2d5" # ansi bright cyan (= base0C)
+      base16: "89b4fa" # ansi bright blue (= base0D)
+      base17: "cba6f7" # ansi bright magenta (= base0E)

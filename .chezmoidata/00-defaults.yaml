@@ -1,0 +1,34 @@
+# Theme data shared by every machine. chezmoi reads the files in this
+# directory in alphabetical order and merges their dictionaries, so:
+#   00-defaults.yaml     this file: the fallback theme + the schema notes below
+#   theme-<slug>.yaml    one theme each, merged into `themes`
+#   zz-local.yaml        this machine's selection (git-ignored), read last so
+#                        its `current_theme` overrides the fallback here
+#
+# Switch themes with the picker (<leader>ft in Neovim, `theme-pick` in a
+# shell) or `theme-sync <slug>`; all of them only rewrite zz-local.yaml, so
+# switching never leaves a git change. Editing current_theme here only
+# changes the default for machines that haven't picked one.
+current_theme: "flexoki-moon"
+
+# Theme schema (one file per theme, validated by scripts/check-themes):
+#   themes:
+#     <slug>:
+#       name: "Display Name"
+#       variant: "dark" | "light"     # sets Neovim's 'background'
+#       palette: base00..base0F, base10..base17 as 6-digit lowercase hex
+#
+# Shape: base24 (base16 slots 00-0F plus extended ANSI-bright slots 10-17).
+# This repo uses base10 as ANSI bright black and base12-17 as bright
+# red/yellow/green/cyan/blue/magenta (base11 is unused); note that real
+# base24 uses base10/11 as extra-dark backgrounds instead.
+#
+# Adding a theme (scripts/theme-import automates this): base00-0F should
+# come from the scheme's own published base16 definition. For base10-17
+# (bright ANSI, a base24 extension with no base16 upstream equivalent),
+# use the scheme's own published "bright" terminal colors when it has
+# them; otherwise fall back to aliasing base10->base03, base11->base07,
+# base12->base08, base13->base0A, base14->base0B, base15->base0C,
+# base16->base0D, base17->base0E. WezTerm maps base08-0E straight onto
+# ANSI red..magenta, so a role-mapped base16 (e.g. base08 = lavender)
+# needs its hue slots remapped from the scheme's own terminal colors.

@@ -1,0 +1,33 @@
+themes:
+  onedark:
+    name: "One Dark"
+    variant: "dark"
+    palette:
+      # From tinted-theming's onedark (base16, by Lalit Magant), which matches
+      # joshdick/onedark.vim and navarasu/onedark.nvim's palette. Stands in for
+      # rakr/vim-one's dark variant too.
+      # No upstream bright-ANSI set, so base10-17 fall back to aliasing per the rule above.
+      base00: "282c34" # bg
+      base01: "353b45" # bg alt
+      base02: "3e4451" # selection bg
+      base03: "545862" # comment / muted fg
+      base04: "565c64" # dim fg / line numbers
+      base05: "abb2bf" # fg
+      base06: "b6bdca" # bright fg
+      base07: "c8ccd4" # brightest fg
+      base08: "e06c75" # red
+      base09: "d19a66" # orange
+      base0A: "e5c07b" # yellow
+      base0B: "98c379" # green
+      base0C: "56b6c2" # cyan
+      base0D: "61afef" # blue
+      base0E: "c678dd" # magenta
+      base0F: "be5046" # brown / misc
+      base10: "545862" # ansi bright black (= base03)
+      base11: "c8ccd4" # ansi bright white/grey (= base07)
+      base12: "e06c75" # ansi bright red (= base08)
+      base13: "e5c07b" # ansi bright yellow (= base0A)
+      base14: "98c379" # ansi bright green (= base0B)
+      base15: "56b6c2" # ansi bright cyan (= base0C)
+      base16: "61afef" # ansi bright blue (= base0D)
+      base17: "c678dd" # ansi bright magenta (= base0E)

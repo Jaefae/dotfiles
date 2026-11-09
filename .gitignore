@@ -1,2 +1,6 @@
 .DS_Store
 Thumbs.db
+
+# This machine's theme selection, written by theme-sync (see
+# .chezmoidata/00-defaults.yaml).
+.chezmoidata/zz-local.yaml

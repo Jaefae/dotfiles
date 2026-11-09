@@ -1,0 +1,32 @@
+themes:
+  github-dark:
+    name: "GitHub Dark"
+    variant: "dark"
+    palette:
+      # From tinted-theming's github-dark (base16).
+      # base12-17 from the same author's base24 github-dark;
+      # base10/11 = base03/07 per this repo's slot convention.
+      base00: "0d1117" # bg
+      base01: "151b23" # bg alt
+      base02: "2f3742" # selection bg
+      base03: "656c76" # comment / muted fg
+      base04: "9198a1" # dim fg / line numbers
+      base05: "d1d7e0" # fg
+      base06: "f0f6fc" # bright fg
+      base07: "ffffff" # brightest fg
+      base08: "ff7b72" # red
+      base09: "ffa657" # orange
+      base0A: "d29922" # yellow
+      base0B: "3fb950" # green
+      base0C: "39c5cf" # cyan
+      base0D: "58a6ff" # blue
+      base0E: "be8fff" # magenta
+      base0F: "ffa198" # brown / misc
+      base10: "656c76" # ansi bright black (= base03)
+      base11: "ffffff" # ansi bright white/grey (= base07)
+      base12: "ffa198" # ansi bright red
+      base13: "e3b341" # ansi bright yellow
+      base14: "56d364" # ansi bright green
+      base15: "56d4dd" # ansi bright cyan
+      base16: "79c0ff" # ansi bright blue
+      base17: "d2a8ff" # ansi bright magenta

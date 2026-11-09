@@ -1,0 +1,32 @@
+themes:
+  nightfox:
+    name: "Nightfox"
+    variant: "dark"
+    palette:
+      # From EdenEast/nightfox.nvim's own extra/nightfox/base16.yaml.
+      # base12-17 from the same repo's extra/nightfox/wezterm.toml brights;
+      # base10/11 = base03/07 per this repo's slot convention.
+      base00: "192330" # bg
+      base01: "212e3f" # bg alt
+      base02: "29394f" # selection bg
+      base03: "575860" # comment / muted fg
+      base04: "71839b" # dim fg / line numbers
+      base05: "cdcecf" # fg
+      base06: "aeafb0" # bright fg
+      base07: "e4e4e5" # brightest fg
+      base08: "c94f6d" # red
+      base09: "f4a261" # orange
+      base0A: "dbc074" # yellow
+      base0B: "81b29a" # green
+      base0C: "63cdcf" # cyan
+      base0D: "719cd6" # blue
+      base0E: "9d79d6" # magenta
+      base0F: "d67ad2" # brown / misc
+      base10: "575860" # ansi bright black (= base03)
+      base11: "e4e4e5" # ansi bright white/grey (= base07)
+      base12: "d16983" # ansi bright red
+      base13: "e0c989" # ansi bright yellow
+      base14: "8ebaa4" # ansi bright green
+      base15: "7ad5d6" # ansi bright cyan
+      base16: "86abdc" # ansi bright blue
+      base17: "baa1e2" # ansi bright magenta

@@ -1,0 +1,33 @@
+themes:
+  flexoki-light:
+    name: "Flexoki Light"
+    variant: "light"
+    palette:
+      # Same accent hues as Flexoki Moon (Flexoki's "600"/"400" weight
+      # accents are designed to read on both light and dark paper), with the
+      # grayscale ramp mirrored: base00 is the paper background instead of
+      # black, base07 is black instead of paper.
+      base00: "fffcf0" # bg (paper)
+      base01: "e6e4d9" # bg alt
+      base02: "cecdc3" # selection bg
+      base03: "878580" # comment / muted fg
+      base04: "575653" # dim fg
+      base05: "343331" # fg
+      base06: "1c1b1a" # bright fg
+      base07: "100f0f" # brightest fg (black)
+      base08: "af3029" # red
+      base09: "bc5215" # orange
+      base0A: "ad8301" # yellow
+      base0B: "66800b" # green
+      base0C: "24837b" # cyan
+      base0D: "205ea6" # blue
+      base0E: "a02f6f" # magenta
+      base0F: "205ea6" # brown slot (aliased to blue)
+      base10: "878580" # ansi bright black
+      base11: "100f0f" # ansi bright white/grey
+      base12: "d14d41" # ansi bright red
+      base13: "d0a215" # ansi bright yellow
+      base14: "879a39" # ansi bright green
+      base15: "3aa99f" # ansi bright cyan
+      base16: "4385be" # ansi bright blue
+      base17: "ce5d97" # ansi bright magenta

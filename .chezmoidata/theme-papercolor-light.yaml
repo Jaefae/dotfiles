@@ -1,0 +1,35 @@
+themes:
+  papercolor-light:
+    name: "PaperColor Light"
+    variant: "light"
+    palette:
+      # Greys (base00-07) from tinted-theming's base24 papercolor-light (by
+      # NLKNguyen, the scheme's author); light is PaperColor's default. Accents
+      # remapped from that file's role order to PaperColor.vim's own terminal
+      # colors (color01-06): its ANSI yellow is olive 5f8700 by design, since
+      # true yellow is unreadable on its white paper.
+      # No upstream bright-ANSI set, so base10-17 fall back to aliasing per the rule above.
+      base00: "eeeeee" # bg
+      base01: "e4e4e4" # bg alt
+      base02: "d0d0d0" # selection bg
+      base03: "878787" # comment / muted fg
+      base04: "b2b2b2" # dim fg / line numbers
+      base05: "444444" # fg
+      base06: "005f87" # bright fg
+      base07: "0087af" # brightest fg
+      base08: "af0000" # red
+      base09: "d75f00" # orange
+      base0A: "5f8700" # yellow
+      base0B: "008700" # green
+      base0C: "005f87" # cyan
+      base0D: "0087af" # blue
+      base0E: "8700af" # magenta
+      base0F: "d70087" # brown / misc
+      base10: "878787" # ansi bright black (= base03)
+      base11: "0087af" # ansi bright white/grey (= base07)
+      base12: "af0000" # ansi bright red (= base08)
+      base13: "5f8700" # ansi bright yellow (= base0A)
+      base14: "008700" # ansi bright green (= base0B)
+      base15: "005f87" # ansi bright cyan (= base0C)
+      base16: "0087af" # ansi bright blue (= base0D)
+      base17: "8700af" # ansi bright magenta (= base0E)
