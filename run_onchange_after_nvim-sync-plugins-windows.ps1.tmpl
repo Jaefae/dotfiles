@@ -1,9 +1,12 @@
-# Re-runs whenever the plugin spec changes (hash below, of the raw,
-# unrendered template source — stable across theme switches since those
-# only change the resolved palette values, not the template text itself),
-# via chezmoi's run_onchange_ convention.
-# chezmoi-colorscheme-hash: {{ include "dot_config/nvim/lua/plugins/colorscheme.lua.tmpl" | sha256sum }}
+# chezmoi re-runs this (run_onchange_) whenever the hashes below change:
+# every plugin spec, the lazy.nvim setup and the lockfile, all as raw source,
+# so theme switches don't trigger it.
+# plugins-hash: {{ range (glob (joinPath .chezmoi.sourceDir "dot_config/nvim/lua/plugins/*")) }}{{ include . | sha256sum | trunc 12 }} {{ end }}
+# lazy-hash: {{ include "dot_config/nvim/lua/config/lazy.lua.tmpl" | sha256sum | trunc 12 }} {{ include "lazy-lock.json" | sha256sum | trunc 12 }}
 
+# `restore` (not `sync`) checks every plugin out at the commit pinned in
+# lazy-lock.json, so all machines run the same versions; missing plugins
+# are installed on startup first. Update pins deliberately with :Lazy update.
 if (Get-Command nvim -ErrorAction SilentlyContinue) {
-    nvim --headless "+Lazy! sync" +qa
+    nvim --headless "+Lazy! restore" +qa
 }

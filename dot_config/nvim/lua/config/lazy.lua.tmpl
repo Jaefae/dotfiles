@@ -1,5 +1,5 @@
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
-if not vim.loop.fs_stat(lazypath) then
+if not vim.uv.fs_stat(lazypath) then
 	vim.fn.system({
 		"git",
 		"clone",
@@ -15,6 +15,11 @@ require("lazy").setup({
 	spec = {
 		{ import = "plugins" },
 	},
+	-- The lockfile lives in the chezmoi source repo (not deployed), so plugin
+	-- pins are versioned with the config and updates written by :Lazy update
+	-- show up as a git change there, instead of drifting a deployed copy
+	-- away from chezmoi's state.
+	lockfile = [=[{{ joinPath .chezmoi.sourceDir "lazy-lock.json" }}]=],
 	install = { colorscheme = { "base16-colorscheme" } },
 	checker = { enabled = false },
 })

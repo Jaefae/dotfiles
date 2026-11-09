@@ -1,5 +1,6 @@
-# Repo documentation, not a dotfile: keep it out of $HOME.
+# Repo files that aren't dotfiles: keep them out of $HOME.
 README.md
+lazy-lock.json
 
 {{ if ne .chezmoi.os "windows" }}
 Documents/PowerShell/Microsoft.PowerShell_profile.ps1
