@@ -47,6 +47,10 @@ local function pick_theme()
 					local theme = theme_data.themes[slug]
 
 					require("base16-colorscheme").setup(theme.palette)
+					-- base16-colorscheme.setup() only sets highlight groups; it doesn't
+					-- fire ColorScheme, so plugins that cache theme colors (lualine)
+					-- would keep the old palette until restart.
+					vim.api.nvim_exec_autocmds("ColorScheme", { pattern = "base16-" .. slug })
 
 					vim.fn.jobstart(sync_cmd(slug), {
 						on_exit = function(_, code)
