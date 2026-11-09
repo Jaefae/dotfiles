@@ -6,6 +6,7 @@
 -- cheap file read done unconditionally adds up to 60 disk hits/sec per
 -- pane. Cache per-cwd and only touch disk every REFRESH_SECONDS.
 local wezterm = require("wezterm")
+local filelinks = require("filelinks")
 
 local M = {}
 
@@ -93,11 +94,12 @@ wezterm.on("update-right-status", function(window, pane)
 	last_rendered_at[window_id] = now
 
 	local palette = window:effective_config().resolved_palette
-	local cwd_uri = pane:get_current_working_dir()
+	-- cwd_to_path also turns Windows' "/C:/Users/..." into "C:/Users/...",
+	-- which the .git walk below needs to find anything on Windows.
+	local path = filelinks.cwd_to_path(pane:get_current_working_dir())
 	local segments = {}
 
-	if cwd_uri then
-		local path = cwd_uri.file_path or tostring(cwd_uri)
+	if path then
 		table.insert(segments, { Foreground = { Color = palette.ansi[5] } })
 		table.insert(segments, { Text = basename_pair(path) })
 

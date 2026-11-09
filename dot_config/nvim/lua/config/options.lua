@@ -43,40 +43,25 @@ vim.api.nvim_create_autocmd("BufReadPost", {
 })
 
 -- Lets WezTerm detect when a pane is inside nvim, to pass CTRL+hjkl through
--- instead of navigating terminal panes. WezTerm user vars are base64-encoded.
--- Needs a POSIX `base64` on PATH; on Windows that's Git's bundled usr/bin,
--- added to PATH by the PowerShell profile (Documents/PowerShell/...ps1.tmpl),
--- not by this file.
-local function encode_and_send(encoded)
-	io.write(string.format("\x1b]1337;SetUserVar=IS_NVIM=%s\x07", encoded:gsub("%s+", "")))
-end
-
-local function base64_cmd(value)
-	return "echo -n " .. value .. " | base64"
+-- instead of navigating terminal panes (see dot_config/wezterm/keys.lua).
+-- WezTerm user vars are base64-encoded; vim.base64 (nvim 0.10+) encodes
+-- in-process, so this needs no subprocess or `base64` binary on PATH.
+local function set_is_nvim(value)
+	io.write(string.format("\x1b]1337;SetUserVar=IS_NVIM=%s\x07", vim.base64.encode(value)))
 end
 
 vim.api.nvim_create_autocmd("VimEnter", {
 	callback = function()
-		-- Async here: startup latency is what the "fast" goal actually cares
-		-- about, and nothing downstream depends on this finishing in order.
-		-- jobstart (unlike vim.system) takes a plain string and goes through
-		-- &shell/&shellcmdflag the same way the original system() call did.
-		local chunks = {}
-		vim.fn.jobstart(base64_cmd("true"), {
-			stdout_buffered = true,
-			on_stdout = function(_, data)
-				chunks = data
-			end,
-			on_exit = function()
-				encode_and_send(table.concat(chunks, ""))
-			end,
-		})
+		set_is_nvim("true")
 	end,
 })
-vim.api.nvim_create_autocmd("VimLeave", {
+vim.api.nvim_create_autocmd({ "VimLeave", "VimSuspend" }, {
 	callback = function()
-		-- Sync here: nvim is about to exit, so blocking briefly is harmless,
-		-- but going async risks the process exiting before the signal is sent.
-		encode_and_send(vim.fn.system(base64_cmd("false")))
+		set_is_nvim("false")
+	end,
+})
+vim.api.nvim_create_autocmd("VimResume", {
+	callback = function()
+		set_is_nvim("true")
 	end,
 })

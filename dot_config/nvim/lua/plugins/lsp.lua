@@ -1,12 +1,10 @@
--- Neovim 0.11+ already maps grn/gra/grr/gri/K for rename/code action/
--- references/implementation/hover on LSP attach — don't re-map those here.
--- This only fills in what core doesn't cover: diagnostic navigation/float.
+-- Neovim 0.11+ already maps grn/gra/grr/gri/K (rename/code action/
+-- references/implementation/hover) on LSP attach, and [d/]d (previous/next
+-- diagnostic) globally — don't re-map those here. This only adds what core
+-- doesn't cover: a key for the diagnostic float.
 vim.api.nvim_create_autocmd("LspAttach", {
 	callback = function(args)
-		local opts = { buffer = args.buf }
-		vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, vim.tbl_extend("force", opts, { desc = "Previous diagnostic" }))
-		vim.keymap.set("n", "]d", vim.diagnostic.goto_next, vim.tbl_extend("force", opts, { desc = "Next diagnostic" }))
-		vim.keymap.set("n", "<leader>e", vim.diagnostic.open_float, vim.tbl_extend("force", opts, { desc = "Show diagnostic" }))
+		vim.keymap.set("n", "<leader>e", vim.diagnostic.open_float, { buffer = args.buf, desc = "Show diagnostic" })
 	end,
 })
 
