@@ -4,14 +4,13 @@
 # eza, Neovim) and recolors running Neovim instances too.
 set -euo pipefail
 
-source_dir="$(chezmoi source-path)"
-
 list_template='{{ range $slug, $t := .themes }}{{ $slug }}  {{ $t.name }}
 {{ end }}'
 
 choice="$(
 	chezmoi execute-template "$list_template" \
-		| fzf --prompt="Theme> " --with-nth=2.. --delimiter='  '
+		| fzf --prompt="Theme> " --with-nth=2.. --delimiter='  ' \
+		|| true
 )"
 
 if [ -z "$choice" ]; then
