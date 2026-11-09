@@ -2,6 +2,7 @@ themes:
   papercolor-light:
     name: "PaperColor Light"
     variant: "light"
+    lint_ignore: ["hue:base0A", "bright-white"] # PaperColor's olive ANSI yellow and blue bright white (see palette notes)
     palette:
       # Greys (base00-07) from tinted-theming's base24 papercolor-light (by
       # NLKNguyen, the scheme's author); light is PaperColor's default. Accents

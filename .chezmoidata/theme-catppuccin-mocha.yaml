@@ -2,6 +2,7 @@ themes:
   catppuccin-mocha:
     name: "Catppuccin Mocha"
     variant: "dark"
+    lint_ignore: ["contrast:comment", "bright-white"] # Catppuccin's own surface1 comments and lavender brightest fg
     palette:
       # From catppuccin/base16's mocha.yaml. No upstream bright-ANSI set,
       # so base10-17 fall back to aliasing per the rule above.

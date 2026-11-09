@@ -5,14 +5,59 @@ on:
   pull_request:
 
 jobs:
-  wezterm-filelinks:
-    # Pure-Lua parser behind WezTerm's LEADER+g "open in nvim" QuickSelect;
-    # its self-test runs under plain Lua 5.4 (WezTerm's own Lua version).
+  lint:
+    # Fast static checks that don't need a full chezmoi apply.
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - run: sudo apt-get install -y lua5.4
-      - run: lua5.4 dot_config/wezterm/filelinks.lua
+      # Pure-Lua parser behind WezTerm's LEADER+g "open in nvim" QuickSelect;
+      # its self-test runs under plain Lua 5.4 (WezTerm's own Lua version).
+      - name: filelinks self-test
+        run: lua5.4 dot_config/wezterm/filelinks.lua
+      # Syntax only (templated .lua.tmpl files are covered, rendered, by the
+      # themes job). LuaJIT-only syntax would be flagged too, which is fine:
+      # none of this config uses it.
+      - name: Lua syntax
+        run: git ls-files '*.lua' | xargs -n1 luac5.4 -p
+      # shellcheck is preinstalled on ubuntu runners. Warning severity and up:
+      # info-level notes (e.g. intentional single-quoted chezmoi templates)
+      # aren't failures.
+      - name: shellcheck
+        run: shellcheck --severity=warning dot_local/bin/executable_theme-sync dot_local/bin/executable_theme-pick
+
+  themes:
+    # Every theme x every themed template: schema, render, parse, and the
+    # palette lint (hue/contrast), strict. See scripts/check-themes.
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install chezmoi and luac
+        run: |
+          sh -c "$(curl -fsLS get.chezmoi.io)" -- -b "$HOME/.local/bin"
+          echo "$HOME/.local/bin" >> "$GITHUB_PATH"
+          sudo apt-get install -y lua5.4
+      - name: check-themes
+        run: |
+          # An empty config: the checks must not depend on any machine's
+          # chezmoi.toml, and with no .chezmoidata/zz-local.yaml in the
+          # checkout this also exercises the default-theme fallback.
+          touch "$RUNNER_TEMP/chezmoi.toml"
+          CHEZMOI_CONFIG="$RUNNER_TEMP/chezmoi.toml" python3 scripts/check-themes --strict
+
+  powershell:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      # PSScriptAnalyzer ships with the windows runner image. Errors only
+      # (parse errors included); style rules like Write-Host aren't failures.
+      - name: PSScriptAnalyzer
+        shell: pwsh
+        run: |
+          $results = @("dot_local/bin/executable_theme-sync.ps1", "dot_local/bin/executable_theme-pick.ps1") |
+            ForEach-Object { Invoke-ScriptAnalyzer -Path $_ -Severity Error }
+          $results | Format-Table -AutoSize
+          if ($results) { exit 1 }
 
   chezmoi-apply-dry-run:
     strategy:

@@ -1,0 +1,165 @@
+#!/usr/bin/env python3
+"""Imports a tinted-theming scheme as .chezmoidata/theme-<slug>.yaml.
+
+Follows the sourcing rule in .chezmoidata/00-defaults.yaml:
+  * base00-0F from the scheme's base16 definition (or base24 with
+    --system base24, for schemes only published that way)
+  * base12-17 (bright ANSI) aliased to base08/0A/0B/0C/0D/0E by default, or
+    taken from the scheme's base24 file with --brights base24
+  * base10/base11 always = base03/base07 (this repo uses them as ANSI bright
+    black/white; real base24 uses them as extra-dark backgrounds)
+  * --override SLOT=HEX for slots that need fixing (role-mapped palettes,
+    a base07 dimmer than fg, ...), recorded in the file's comment
+
+Then runs scripts/check-themes on the new theme so palette problems show up
+immediately; record deliberate deviations with --lint-ignore.
+
+Examples:
+  scripts/theme-import dracula
+  scripts/theme-import tokyo-night-storm --slug tokyonight-storm --brights base24
+  scripts/theme-import monokai --override base07=f8f8f2 --note "base07 = fg"
+
+Browse schemes: https://github.com/tinted-theming/schemes (base16/, base24/).
+"""
+import argparse
+import os
+import re
+import subprocess
+import sys
+
+REPO = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+RAW = "https://raw.githubusercontent.com/tinted-theming/schemes/spec-0.11/{system}/{scheme}.yaml"
+CORE = [f"base0{c}" for c in "0123456789ABCDEF"]
+ROLE = {
+    "base00": "bg", "base01": "bg alt", "base02": "selection bg",
+    "base03": "comment / muted fg", "base04": "dim fg / line numbers", "base05": "fg",
+    "base06": "bright fg", "base07": "brightest fg", "base08": "red",
+    "base09": "orange", "base0A": "yellow", "base0B": "green", "base0C": "cyan",
+    "base0D": "blue", "base0E": "magenta", "base0F": "brown / misc",
+}
+BRIGHT = [("base10", "black", "base03"), ("base11", "white/grey", "base07"),
+          ("base12", "red", "base08"), ("base13", "yellow", "base0A"),
+          ("base14", "green", "base0B"), ("base15", "cyan", "base0C"),
+          ("base16", "blue", "base0D"), ("base17", "magenta", "base0E")]
+
+
+def fetch(system, scheme):
+    """Returns ({meta, palette}, url), or (None, url) if the scheme doesn't
+    exist. Uses curl rather than urllib: curl uses the system trust store,
+    while some Python installs (e.g. python.org's macOS build) ship without
+    CA certificates and fail every HTTPS request."""
+    url = RAW.format(system=system, scheme=scheme)
+    r = subprocess.run(["curl", "-fsSL", "--max-time", "20", "-w", "\\n%{http_code}", url],
+                       capture_output=True, text=True)
+    body, _, status = r.stdout.rpartition("\n")
+    if status == "404":
+        return None, url
+    if r.returncode != 0:
+        sys.exit(f"fetching {url} failed (curl exit {r.returncode}, HTTP {status or '?'}): {r.stderr.strip()}")
+    text = body
+    meta = {k: (re.search(rf'^{k}:\s*"?([^"\n]*)"?', text, re.M) or [None, ""])[1] for k in ("name", "author", "variant")}
+    palette = {}
+    for m in re.finditer(r'^\s*(base[0-9A-Fa-f]{2}):\s*"#?([0-9a-fA-F]{6})"', text, re.M):
+        key = m.group(1)[:4] + m.group(1)[4:].upper()
+        palette[key] = m.group(2).lower()
+    return {"meta": meta, "palette": palette}, url
+
+
+def main():
+    ap = argparse.ArgumentParser(description=__doc__.split("\n")[0], epilog=__doc__.split("\n\n", 1)[1],
+                                 formatter_class=argparse.RawDescriptionHelpFormatter)
+    ap.add_argument("scheme", help="tinted-theming scheme file name, without .yaml (e.g. dracula)")
+    ap.add_argument("--slug", help="theme slug (default: the scheme name)")
+    ap.add_argument("--name", help="display name (default: the scheme's own name)")
+    ap.add_argument("--system", choices=["base16", "base24"], default="base16", help="source for base00-0F")
+    ap.add_argument("--brights", choices=["alias", "base24"], default="alias", help="source for base12-17")
+    ap.add_argument("--override", action="append", default=[], metavar="SLOT=HEX", help="replace one slot")
+    ap.add_argument("--lint-ignore", action="append", default=[], metavar="RULE", help="known check-themes deviation")
+    ap.add_argument("--note", action="append", default=[], help="extra comment line(s) explaining overrides")
+    ap.add_argument("--force", action="store_true", help="overwrite an existing theme file")
+    args = ap.parse_args()
+
+    slug = args.slug or args.scheme
+    if not re.fullmatch(r"[a-z0-9]+(-[a-z0-9]+)*", slug):
+        sys.exit(f"slug must be lowercase kebab-case, got {slug!r}")
+    out_path = os.path.join(REPO, ".chezmoidata", f"theme-{slug}.yaml")
+    if os.path.exists(out_path) and not args.force:
+        sys.exit(f"{os.path.relpath(out_path, REPO)} exists; pass --force to overwrite")
+
+    core_src, core_url = fetch(args.system, args.scheme)
+    if not core_src:
+        hint = " (try --system base24)" if args.system == "base16" else ""
+        sys.exit(f"no {args.system} scheme '{args.scheme}' at {core_url}{hint}")
+    core = core_src["palette"]
+    missing = [k for k in CORE if k not in core]
+    if missing:
+        sys.exit(f"{core_url} is missing {missing}")
+
+    brights, b24_url = None, None
+    if args.brights == "base24" or args.system == "base24":
+        b24 = core_src if args.system == "base24" else None
+        if b24 is None:
+            b24, b24_url = fetch("base24", args.scheme)
+            if not b24:
+                sys.exit(f"--brights base24: no base24 scheme '{args.scheme}' at {b24_url}")
+        else:
+            b24_url = core_url
+        if args.brights == "base24":
+            brights = {k: v for k, v in b24["palette"].items() if k in {s for s, _, _ in BRIGHT[2:]}}
+
+    overrides = {}
+    for item in args.override:
+        m = re.fullmatch(r"(base[0-9A-Fa-f]{2})=#?([0-9a-fA-F]{6})", item)
+        if not m:
+            sys.exit(f"--override must look like base0A=e6db74, got {item!r}")
+        key = m.group(1)[:4] + m.group(1)[4:].upper()
+        overrides[key] = m.group(2).lower()
+
+    meta = core_src["meta"]
+    variant = (meta.get("variant") or "dark").lower()
+    if variant not in ("dark", "light"):
+        variant = "dark"
+    name = args.name or meta.get("name") or slug
+
+    comment = [f"From tinted-theming's {args.system} {args.scheme} ({meta.get('author') or 'unknown author'})."]
+    if brights:
+        comment.append(f"base12-17 from its base24 file ({b24_url.rsplit('/', 2)[-2]}/{args.scheme});")
+        comment.append("base10/11 = base03/07 per this repo's slot convention.")
+    else:
+        comment.append("No upstream bright-ANSI set used, so base10-17 alias per the rule in 00-defaults.yaml.")
+    if overrides:
+        comment.append("Overrides: " + ", ".join(f"{k}={v} (was {core.get(k, brights.get(k) if brights else '?')})" for k, v in sorted(overrides.items())) + ".")
+    comment += args.note
+    comment.append("Imported with scripts/theme-import.")
+
+    palette = dict(core)
+    palette.update(overrides)
+    lines = ["themes:", f"  {slug}:", f'    name: "{name}"', f'    variant: "{variant}"']
+    if args.lint_ignore:
+        lines.append("    lint_ignore: [" + ", ".join(f'"{r}"' for r in args.lint_ignore) + "]")
+    lines.append("    palette:")
+    lines += [f"      # {c}" for c in comment]
+    for k in CORE:
+        lines.append(f'      {k}: "{palette[k]}" # {ROLE[k]}')
+    for k, label, alias in BRIGHT:
+        if k in overrides:
+            value, note = overrides[k], ""
+        elif brights and k in brights:
+            value, note = brights[k], ""
+        else:
+            value, note = palette[alias], f" (= {alias})"
+        lines.append(f'      {k}: "{value}" # ansi bright {label}{note}')
+    with open(out_path, "w", encoding="utf-8", newline="\n") as fh:
+        fh.write("\n".join(lines) + "\n")
+    print(f"wrote {os.path.relpath(out_path, REPO)}", flush=True)
+
+    check = os.path.join(REPO, "scripts", "check-themes")
+    r = subprocess.run([sys.executable, check, "--strict", "--theme", slug])
+    if r.returncode:
+        print("\ncheck-themes reported problems: fix them with --override (and --note), "
+              "or record deliberate deviations with --lint-ignore, then re-run with --force.")
+    sys.exit(r.returncode)
+
+
+if __name__ == "__main__":
+    main()

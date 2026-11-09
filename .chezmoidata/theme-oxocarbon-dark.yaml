@@ -2,6 +2,7 @@ themes:
   oxocarbon-dark:
     name: "Oxocarbon Dark"
     variant: "dark"
+    lint_ignore: ["hue:base0A"] # IBM Carbon has no yellow; upstream uses orange
     palette:
       # From tinted-theming's oxocarbon-dark (by shaunsingh/IBM).
       # No upstream bright-ANSI set, so base10-17 fall back to aliasing per the rule above.

@@ -2,6 +2,7 @@ themes:
   iceberg:
     name: "Iceberg"
     variant: "dark"
+    lint_ignore: ["hue:base0A"] # Iceberg has no pure yellow (see palette notes)
     palette:
       # No published base16 upstream. Derived from cocopon/iceberg.vim's
       # colors/iceberg.vim (dark): Normal/CursorLine/Visual/Comment/LineNr for

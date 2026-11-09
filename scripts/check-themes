@@ -1,0 +1,228 @@
+#!/usr/bin/env python3
+"""Validates every theme in .chezmoidata/ against every themed template.
+
+Checks, for each theme:
+  * schema: name, variant (dark|light), exactly the 24 base24 slots as
+    6-digit lowercase hex, optional lint_ignore list of known rule names;
+    and that .chezmoidata/theme-<slug>.yaml defines exactly <slug>
+  * rendering: every template that includes {{ template "theme-guard" . }}
+    renders with that theme selected, and the output parses (Lua via luac,
+    TOML via tomllib, YAML via chezmoi's fromYaml, fzf options by shape)
+  * palette lint: ANSI-mapped slots have the expected hue (WezTerm maps
+    base08-0E straight onto ANSI red..magenta), and fg / comments /
+    bright white keep usable contrast against the background
+
+Lint findings are warnings unless --strict, which CI uses. A theme that
+deviates on purpose lists the rule in `lint_ignore` (with the reason in its
+comment), e.g. `lint_ignore: ["hue:base0A"]`.
+
+Usage: scripts/check-themes [--strict] [--theme SLUG ...]
+Needs: python3 >= 3.11, chezmoi, and luac (luac5.4 or luac) on PATH.
+"""
+import argparse
+import colorsys
+import json
+import os
+import re
+import shutil
+import subprocess
+import sys
+import tempfile
+import tomllib
+
+REPO = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+SLOTS = [f"base0{c}" for c in "0123456789ABCDEF"] + [f"base1{c}" for c in "01234567"]
+HEX = re.compile(r"^[0-9a-f]{6}$")
+
+# Expected hue ranges in degrees for the ANSI-mapped slots. Wide on purpose:
+# the point is catching role-mapped palettes (base08 = lavender), not
+# policing a scheme's taste.
+HUES = {
+    "base08": [(330, 360), (0, 25)],  # red
+    "base0A": [(30, 75)],             # yellow
+    "base0B": [(65, 170)],            # green
+    "base0C": [(150, 210)],           # cyan
+    "base0D": [(185, 260)],           # blue
+    "base0E": [(250, 345)],           # magenta
+}
+RULES = {f"hue:{slot}" for slot in HUES} | {"contrast:fg", "contrast:comment", "bright-white"}
+
+
+def chezmoi(*args, data=None, stdin=None):
+    """Runs chezmoi against this repo. `data` becomes --override-data, which
+    must follow the subcommand; `stdin` is fed to execute-template."""
+    cmd = ["chezmoi", f"--source={REPO}"]
+    if os.environ.get("CHEZMOI_CONFIG"):
+        cmd.append(f"--config={os.environ['CHEZMOI_CONFIG']}")
+    cmd.append(args[0])
+    if data is not None:
+        cmd += ["--override-data", json.dumps(data)]
+    cmd += list(args[1:])
+    return subprocess.run(cmd, input=stdin, capture_output=True, text=True)
+
+
+def luminance(hex_):
+    def chan(v):
+        v /= 255
+        return v / 12.92 if v <= 0.03928 else ((v + 0.055) / 1.055) ** 2.4
+    r, g, b = (int(hex_[i:i + 2], 16) for i in (0, 2, 4))
+    return 0.2126 * chan(r) + 0.7152 * chan(g) + 0.0722 * chan(b)
+
+
+def contrast(a, b):
+    la, lb = sorted([luminance(a), luminance(b)])
+    return (lb + 0.05) / (la + 0.05)
+
+
+def lint(palette):
+    """Yields (rule, message) for each heuristic the palette trips."""
+    for slot, ranges in HUES.items():
+        r, g, b = (int(palette[slot][i:i + 2], 16) / 255 for i in (0, 2, 4))
+        h, _, s = colorsys.rgb_to_hls(r, g, b)
+        h *= 360
+        if s < 0.15 or not any(lo <= h <= hi for lo, hi in ranges):
+            yield f"hue:{slot}", f"{slot} #{palette[slot]} (hue {h:.0f}, saturation {s:.2f}) doesn't read as its ANSI color"
+    bg = palette["base00"]
+    if contrast(bg, palette["base05"]) < 4.5:
+        yield "contrast:fg", f"fg base05 on bg is {contrast(bg, palette['base05']):.1f}:1 (< 4.5)"
+    if contrast(bg, palette["base03"]) < 1.8:
+        yield "contrast:comment", f"comments base03 on bg is {contrast(bg, palette['base03']):.1f}:1 (< 1.8)"
+    d05 = abs(luminance(palette["base05"]) - luminance(bg))
+    d07 = abs(luminance(palette["base07"]) - luminance(bg))
+    if d07 + 1e-9 < d05:
+        yield "bright-white", f"base07 #{palette['base07']} (WezTerm's bright white) is closer to bg than fg #{palette['base05']}"
+
+
+def themed_templates():
+    out = []
+    for root, dirs, files in os.walk(REPO):
+        rel_root = os.path.relpath(root, REPO)
+        if rel_root == ".":
+            dirs[:] = [d for d in dirs if d not in (".git", ".chezmoitemplates", "scripts")]
+        for f in files:
+            if f.endswith(".tmpl"):
+                path = os.path.join(root, f)
+                with open(path, encoding="utf-8") as fh:
+                    if 'template "theme-guard"' in fh.read():
+                        out.append(os.path.relpath(path, REPO))
+    return sorted(out)
+
+
+def validate_output(template, text, luac, tmpdir):
+    """Returns an error string, or None if the rendered text parses."""
+    target = template.removesuffix(".tmpl")
+    if target.endswith(".lua"):
+        if not luac:
+            return None
+        path = os.path.join(tmpdir, "out.lua")
+        with open(path, "w", encoding="utf-8") as fh:
+            fh.write(text)
+        r = subprocess.run([luac, "-p", path], capture_output=True, text=True)
+        return (r.stderr.strip() or "luac failed") if r.returncode else None
+    if target.endswith(".toml"):
+        try:
+            tomllib.loads(text)
+        except tomllib.TOMLDecodeError as e:
+            return f"TOML: {e}"
+        return None
+    if target.endswith((".yml", ".yaml")):
+        r = chezmoi("execute-template", "{{ fromYaml .yaml_text | toJson }}", data={"yaml_text": text})
+        return f"YAML: {r.stderr.strip()}" if r.returncode else None
+    if target.endswith("fzf/theme"):
+        spec = re.compile(r"^--color=([a-z+-]+:(-1|#[0-9a-f]{6}))(,[a-z+-]+:(-1|#[0-9a-f]{6}))*$")
+        bad = [line for line in text.splitlines() if line.strip() and not spec.match(line)]
+        return f"fzf: unexpected line(s): {bad}" if bad else None
+    return None
+
+
+def main():
+    ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
+    ap.add_argument("--strict", action="store_true", help="fail on lint warnings too")
+    ap.add_argument("--theme", action="append", help="only check these slugs")
+    args = ap.parse_args()
+
+    r = chezmoi("data", "--format", "json")
+    if r.returncode:
+        sys.exit(f"chezmoi data failed:\n{r.stderr}")
+    themes = json.loads(r.stdout)["themes"]
+    slugs = sorted(args.theme or themes)
+
+    errors, warnings = [], []
+
+    # Schema + one-theme-per-file layout.
+    data_dir = os.path.join(REPO, ".chezmoidata")
+    for f in sorted(os.listdir(data_dir)):
+        if f.startswith("theme-") and f.endswith(".yaml"):
+            with open(os.path.join(data_dir, f), encoding="utf-8") as fh:
+                defined = re.findall(r"^  ([a-z0-9-]+):\s*$", fh.read(), re.M)
+            expected = f[len("theme-"):-len(".yaml")]
+            if defined != [expected]:
+                errors.append(f"{f}: should define exactly theme '{expected}', defines {defined}")
+    for slug in slugs:
+        if slug not in themes:
+            errors.append(f"{slug}: no such theme")
+            continue
+        t = themes[slug]
+        unknown_keys = set(t) - {"name", "variant", "palette", "lint_ignore"}
+        if unknown_keys:
+            errors.append(f"{slug}: unknown keys {sorted(unknown_keys)}")
+        if not isinstance(t.get("name"), str) or not t["name"]:
+            errors.append(f"{slug}: missing name")
+        if t.get("variant") not in ("dark", "light"):
+            errors.append(f"{slug}: variant must be dark or light, got {t.get('variant')!r}")
+        palette = t.get("palette") or {}
+        missing, extra = set(SLOTS) - set(palette), set(palette) - set(SLOTS)
+        if missing or extra:
+            errors.append(f"{slug}: palette missing {sorted(missing)} / unexpected {sorted(extra)}")
+        bad_hex = [k for k, v in palette.items() if not (isinstance(v, str) and HEX.match(v))]
+        if bad_hex:
+            errors.append(f"{slug}: not 6-digit lowercase hex: {bad_hex}")
+        ignored = t.get("lint_ignore") or []
+        unknown_rules = set(ignored) - RULES
+        if unknown_rules:
+            errors.append(f"{slug}: unknown lint_ignore rules {sorted(unknown_rules)} (known: {sorted(RULES)})")
+        if not missing and not bad_hex:
+            tripped = dict(lint(palette))
+            for rule, message in tripped.items():
+                if rule not in ignored:
+                    warnings.append(f"{slug}: [{rule}] {message}")
+            for rule in ignored:
+                if rule in RULES and rule not in tripped:
+                    warnings.append(f"{slug}: lint_ignore lists '{rule}' but it no longer trips; remove it")
+
+    # Render every themed template with every theme.
+    templates = themed_templates()
+    if not templates:
+        errors.append("no themed templates found (expected {{ template \"theme-guard\" . }} includes)")
+    luac = shutil.which("luac5.4") or shutil.which("luac")
+    if not luac:
+        warnings.append("luac not found: rendered Lua is not syntax-checked")
+    with tempfile.TemporaryDirectory() as tmpdir:
+        for slug in slugs:
+            if slug not in themes:
+                continue
+            for template in templates:
+                with open(os.path.join(REPO, template), encoding="utf-8") as fh:
+                    source = fh.read()
+                r = chezmoi("execute-template", data={"current_theme": slug}, stdin=source)
+                if r.returncode:
+                    errors.append(f"{slug} x {template}: render failed: {r.stderr.strip()}")
+                    continue
+                if "<no value>" in r.stdout:
+                    errors.append(f"{slug} x {template}: output contains <no value> (missing palette key?)")
+                problem = validate_output(template, r.stdout, luac, tmpdir)
+                if problem:
+                    errors.append(f"{slug} x {template}: {problem}")
+
+    for w in warnings:
+        print(f"warning: {w}")
+    for e in errors:
+        print(f"error: {e}")
+    print(f"checked {len(slugs)} theme(s) x {len(templates)} template(s): "
+          f"{len(errors)} error(s), {len(warnings)} warning(s)")
+    if errors or (args.strict and warnings):
+        sys.exit(1)
+
+
+if __name__ == "__main__":
+    main()

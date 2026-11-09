@@ -2,6 +2,7 @@ themes:
   rose-pine:
     name: "Rosé Pine"
     variant: "dark"
+    lint_ignore: ["hue:base0B", "hue:base0C"] # Rose Pine's official terminal mapping: green=pine, cyan=rose
     palette:
       # Greys (base00-06) from tinted-theming's rose-pine (by Emilia Dunfelt).
       # Its accents are role-mapped (base0B pine, base0E gold), so base08-0E

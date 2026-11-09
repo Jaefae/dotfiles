@@ -2,6 +2,7 @@ themes:
   gruvbox-dark:
     name: "Gruvbox Dark"
     variant: "dark"
+    lint_ignore: ["hue:base0B", "hue:base0C", "hue:base0D"] # Gruvbox's yellow-green, aqua and blue-grey are its design
     palette:
       # From tinted-theming/base16-gruvbox-scheme's "dark-medium" variant.
       # No separate upstream bright-ANSI set exists, so base10-17 fall back

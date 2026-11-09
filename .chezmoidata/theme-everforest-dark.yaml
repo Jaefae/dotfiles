@@ -2,6 +2,7 @@ themes:
   everforest-dark:
     name: "Everforest Dark"
     variant: "dark"
+    lint_ignore: ["hue:base0C", "hue:base0D"] # Everforest's aqua and blue are muted green-blues by design
     palette:
       # From tinted-theming's everforest-dark-medium (by sainnhe, the scheme's author).
       # No upstream bright-ANSI set, so base10-17 fall back to aliasing per the rule above.

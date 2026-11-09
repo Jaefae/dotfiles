@@ -2,6 +2,7 @@ themes:
   nord:
     name: "Nord"
     variant: "dark"
+    lint_ignore: ["contrast:comment"] # Nord's polar-night comments are famously dim, upstream design
     palette:
       # From tinted-theming's nord (by arcticicestudio, the scheme's author).
       # No upstream bright-ANSI set, so base10-17 fall back to aliasing per the rule above.
