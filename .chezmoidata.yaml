@@ -130,3 +130,510 @@ themes:
       base15: "94e2d5" # ansi bright cyan (= base0C)
       base16: "89b4fa" # ansi bright blue (= base0D)
       base17: "cba6f7" # ansi bright magenta (= base0E)
+  tokyonight-night:
+    name: "Tokyo Night"
+    palette:
+      # From folke/tokyonight.nvim's own 'night' palette (lua/tokyonight/colors)
+      # and extras/wezterm/tokyonight_night.toml. tinted-theming's base16 port
+      # is role-mapped (base08 lavender, base0A cyan), which would scramble the
+      # terminal's ANSI colors. base06/07 from that port's light greys.
+      # base10-17 from the official WezTerm extra's brights.
+      base00: "1a1b26" # bg
+      base01: "16161e" # bg alt
+      base02: "283457" # selection bg
+      base03: "565f89" # comment / muted fg
+      base04: "3b4261" # dim fg / line numbers
+      base05: "c0caf5" # fg
+      base06: "cbccd1" # bright fg
+      base07: "d5d6db" # brightest fg
+      base08: "f7768e" # red
+      base09: "ff9e64" # orange
+      base0A: "e0af68" # yellow
+      base0B: "9ece6a" # green
+      base0C: "7dcfff" # cyan
+      base0D: "7aa2f7" # blue
+      base0E: "bb9af7" # magenta
+      base0F: "db4b4b" # brown / misc
+      base10: "414868" # ansi bright black
+      base11: "d5d6db" # ansi bright white/grey (= base07)
+      base12: "ff899d" # ansi bright red
+      base13: "faba4a" # ansi bright yellow
+      base14: "9fe044" # ansi bright green
+      base15: "a4daff" # ansi bright cyan
+      base16: "8db0ff" # ansi bright blue
+      base17: "c7a9ff" # ansi bright magenta
+  kanagawa-wave:
+    name: "Kanagawa Wave"
+    palette:
+      # From tinted-theming's kanagawa (by rebelot, the scheme's author), with
+      # base07 raised to the official bright white (tinted's 717c7c is darker
+      # than fg, and base07 is WezTerm's bright white). base10-17 from
+      # rebelot/kanagawa.nvim's extras/alacritty_kanagawa.toml brights.
+      base00: "1f1f28" # bg
+      base01: "16161d" # bg alt
+      base02: "223249" # selection bg
+      base03: "54546d" # comment / muted fg
+      base04: "727169" # dim fg / line numbers
+      base05: "dcd7ba" # fg
+      base06: "c8c093" # bright fg
+      base07: "dcd7ba" # brightest fg
+      base08: "c34043" # red
+      base09: "ffa066" # orange
+      base0A: "c0a36e" # yellow
+      base0B: "76946a" # green
+      base0C: "6a9589" # cyan
+      base0D: "7e9cd8" # blue
+      base0E: "957fb8" # magenta
+      base0F: "d27e99" # brown / misc
+      base10: "727169" # ansi bright black
+      base11: "dcd7ba" # ansi bright white/grey (= base07)
+      base12: "e82424" # ansi bright red
+      base13: "e6c384" # ansi bright yellow
+      base14: "98bb6c" # ansi bright green
+      base15: "7aa89f" # ansi bright cyan
+      base16: "7fb4ca" # ansi bright blue
+      base17: "938aa9" # ansi bright magenta
+  everforest-dark:
+    name: "Everforest Dark"
+    palette:
+      # From tinted-theming's everforest-dark-medium (by sainnhe, the scheme's author).
+      # No upstream bright-ANSI set, so base10-17 fall back to aliasing per the rule above.
+      # That file puts the real fg (d3c6aa) in base07 and greys in base03-06,
+      # but base16-nvim draws Normal text in base05 and comments in base03, so
+      # base05/06 = fg and base03/04 = Everforest's own grey1 (comments) /
+      # grey0, matching autoload/everforest.vim.
+      base00: "2d353b" # bg
+      base01: "343f44" # bg alt
+      base02: "3d484d" # selection bg
+      base03: "859289" # comment / muted fg
+      base04: "7a8478" # dim fg / line numbers
+      base05: "d3c6aa" # fg
+      base06: "d3c6aa" # bright fg
+      base07: "d3c6aa" # brightest fg
+      base08: "e67e80" # red
+      base09: "e69875" # orange
+      base0A: "dbbc7f" # yellow
+      base0B: "a7c080" # green
+      base0C: "83c092" # cyan
+      base0D: "7fbbb3" # blue
+      base0E: "d699b6" # magenta
+      base0F: "514045" # brown / misc
+      base10: "859289" # ansi bright black (= base03)
+      base11: "d3c6aa" # ansi bright white/grey (= base07)
+      base12: "e67e80" # ansi bright red (= base08)
+      base13: "dbbc7f" # ansi bright yellow (= base0A)
+      base14: "a7c080" # ansi bright green (= base0B)
+      base15: "83c092" # ansi bright cyan (= base0C)
+      base16: "7fbbb3" # ansi bright blue (= base0D)
+      base17: "d699b6" # ansi bright magenta (= base0E)
+  nightfox:
+    name: "Nightfox"
+    palette:
+      # From EdenEast/nightfox.nvim's own extra/nightfox/base16.yaml.
+      # base12-17 from the same repo's extra/nightfox/wezterm.toml brights;
+      # base10/11 = base03/07 per this repo's slot convention.
+      base00: "192330" # bg
+      base01: "212e3f" # bg alt
+      base02: "29394f" # selection bg
+      base03: "575860" # comment / muted fg
+      base04: "71839b" # dim fg / line numbers
+      base05: "cdcecf" # fg
+      base06: "aeafb0" # bright fg
+      base07: "e4e4e5" # brightest fg
+      base08: "c94f6d" # red
+      base09: "f4a261" # orange
+      base0A: "dbc074" # yellow
+      base0B: "81b29a" # green
+      base0C: "63cdcf" # cyan
+      base0D: "719cd6" # blue
+      base0E: "9d79d6" # magenta
+      base0F: "d67ad2" # brown / misc
+      base10: "575860" # ansi bright black (= base03)
+      base11: "e4e4e5" # ansi bright white/grey (= base07)
+      base12: "d16983" # ansi bright red
+      base13: "e0c989" # ansi bright yellow
+      base14: "8ebaa4" # ansi bright green
+      base15: "7ad5d6" # ansi bright cyan
+      base16: "86abdc" # ansi bright blue
+      base17: "baa1e2" # ansi bright magenta
+  onedark:
+    name: "One Dark"
+    palette:
+      # From tinted-theming's onedark (base16, by Lalit Magant), which matches
+      # joshdick/onedark.vim and navarasu/onedark.nvim's palette. Stands in for
+      # rakr/vim-one's dark variant too.
+      # No upstream bright-ANSI set, so base10-17 fall back to aliasing per the rule above.
+      base00: "282c34" # bg
+      base01: "353b45" # bg alt
+      base02: "3e4451" # selection bg
+      base03: "545862" # comment / muted fg
+      base04: "565c64" # dim fg / line numbers
+      base05: "abb2bf" # fg
+      base06: "b6bdca" # bright fg
+      base07: "c8ccd4" # brightest fg
+      base08: "e06c75" # red
+      base09: "d19a66" # orange
+      base0A: "e5c07b" # yellow
+      base0B: "98c379" # green
+      base0C: "56b6c2" # cyan
+      base0D: "61afef" # blue
+      base0E: "c678dd" # magenta
+      base0F: "be5046" # brown / misc
+      base10: "545862" # ansi bright black (= base03)
+      base11: "c8ccd4" # ansi bright white/grey (= base07)
+      base12: "e06c75" # ansi bright red (= base08)
+      base13: "e5c07b" # ansi bright yellow (= base0A)
+      base14: "98c379" # ansi bright green (= base0B)
+      base15: "56b6c2" # ansi bright cyan (= base0C)
+      base16: "61afef" # ansi bright blue (= base0D)
+      base17: "c678dd" # ansi bright magenta (= base0E)
+  molokai:
+    name: "Molokai"
+    palette:
+      # No faithful base16 upstream (tinted-theming's molokai is a different
+      # iTerm scheme). Derived from tomasr/molokai's colors/molokai.vim default
+      # variant: Normal/CursorLine/Visual/Comment/LineNr for base00-04, its
+      # GUI accents for base08-0E. Molokai has one fg and uses one blue for
+      # both cyan and blue. Stands in for ku1ik/vim-monokai as well.
+      # No upstream bright-ANSI set, so base10-17 fall back to aliasing per the rule above.
+      base00: "1b1d1e" # bg
+      base01: "293739" # bg alt
+      base02: "403d3d" # selection bg
+      base03: "7e8e91" # comment / muted fg
+      base04: "465457" # dim fg / line numbers
+      base05: "f8f8f2" # fg
+      base06: "f8f8f2" # bright fg
+      base07: "f8f8f2" # brightest fg
+      base08: "f92672" # red
+      base09: "fd971f" # orange
+      base0A: "e6db74" # yellow
+      base0B: "a6e22e" # green
+      base0C: "66d9ef" # cyan
+      base0D: "66d9ef" # blue
+      base0E: "ae81ff" # magenta
+      base0F: "fd971f" # brown / misc
+      base10: "7e8e91" # ansi bright black (= base03)
+      base11: "f8f8f2" # ansi bright white/grey (= base07)
+      base12: "f92672" # ansi bright red (= base08)
+      base13: "e6db74" # ansi bright yellow (= base0A)
+      base14: "a6e22e" # ansi bright green (= base0B)
+      base15: "66d9ef" # ansi bright cyan (= base0C)
+      base16: "66d9ef" # ansi bright blue (= base0D)
+      base17: "ae81ff" # ansi bright magenta (= base0E)
+  rose-pine:
+    name: "Rosé Pine"
+    palette:
+      # Greys (base00-06) from tinted-theming's rose-pine (by Emilia Dunfelt).
+      # Its accents are role-mapped (base0B pine, base0E gold), so base08-0E
+      # follow rose-pine/alacritty's official ANSI mapping instead: red=love,
+      # yellow=gold, green=pine, cyan=rose, blue=foam, magenta=iris (Rosé Pine
+      # has no orange; base09 is rose). base07 raised to text e0def4, the
+      # official bright white. Upstream brights equal its normal colors, so
+      # base10-17 alias per the rule above.
+      base00: "191724" # bg
+      base01: "1f1d2e" # bg alt
+      base02: "26233a" # selection bg
+      base03: "6e6a86" # comment / muted fg
+      base04: "908caa" # dim fg / line numbers
+      base05: "e0def4" # fg
+      base06: "e0def4" # bright fg
+      base07: "e0def4" # brightest fg
+      base08: "eb6f92" # red
+      base09: "ebbcba" # orange
+      base0A: "f6c177" # yellow
+      base0B: "31748f" # green
+      base0C: "ebbcba" # cyan
+      base0D: "9ccfd8" # blue
+      base0E: "c4a7e7" # magenta
+      base0F: "524f67" # brown / misc
+      base10: "6e6a86" # ansi bright black (= base03)
+      base11: "e0def4" # ansi bright white/grey (= base07)
+      base12: "eb6f92" # ansi bright red (= base08)
+      base13: "f6c177" # ansi bright yellow (= base0A)
+      base14: "31748f" # ansi bright green (= base0B)
+      base15: "ebbcba" # ansi bright cyan (= base0C)
+      base16: "9ccfd8" # ansi bright blue (= base0D)
+      base17: "c4a7e7" # ansi bright magenta (= base0E)
+  papercolor-light:
+    name: "PaperColor Light"
+    palette:
+      # Greys (base00-07) from tinted-theming's base24 papercolor-light (by
+      # NLKNguyen, the scheme's author); light is PaperColor's default. Accents
+      # remapped from that file's role order to PaperColor.vim's own terminal
+      # colors (color01-06): its ANSI yellow is olive 5f8700 by design, since
+      # true yellow is unreadable on its white paper.
+      # No upstream bright-ANSI set, so base10-17 fall back to aliasing per the rule above.
+      base00: "eeeeee" # bg
+      base01: "e4e4e4" # bg alt
+      base02: "d0d0d0" # selection bg
+      base03: "878787" # comment / muted fg
+      base04: "b2b2b2" # dim fg / line numbers
+      base05: "444444" # fg
+      base06: "005f87" # bright fg
+      base07: "0087af" # brightest fg
+      base08: "af0000" # red
+      base09: "d75f00" # orange
+      base0A: "5f8700" # yellow
+      base0B: "008700" # green
+      base0C: "005f87" # cyan
+      base0D: "0087af" # blue
+      base0E: "8700af" # magenta
+      base0F: "d70087" # brown / misc
+      base10: "878787" # ansi bright black (= base03)
+      base11: "0087af" # ansi bright white/grey (= base07)
+      base12: "af0000" # ansi bright red (= base08)
+      base13: "5f8700" # ansi bright yellow (= base0A)
+      base14: "008700" # ansi bright green (= base0B)
+      base15: "005f87" # ansi bright cyan (= base0C)
+      base16: "0087af" # ansi bright blue (= base0D)
+      base17: "8700af" # ansi bright magenta (= base0E)
+  nord:
+    name: "Nord"
+    palette:
+      # From tinted-theming's nord (by arcticicestudio, the scheme's author).
+      # No upstream bright-ANSI set, so base10-17 fall back to aliasing per the rule above.
+      # base07 = nord6 (eceff4) instead of frost nord7 (8fbcbb), since base07
+      # is WezTerm's bright white; nord6 is Nord's official bright white.
+      base00: "2e3440" # bg
+      base01: "3b4252" # bg alt
+      base02: "434c5e" # selection bg
+      base03: "4c566a" # comment / muted fg
+      base04: "d8dee9" # dim fg / line numbers
+      base05: "e5e9f0" # fg
+      base06: "eceff4" # bright fg
+      base07: "eceff4" # brightest fg
+      base08: "bf616a" # red
+      base09: "d08770" # orange
+      base0A: "ebcb8b" # yellow
+      base0B: "a3be8c" # green
+      base0C: "88c0d0" # cyan
+      base0D: "81a1c1" # blue
+      base0E: "b48ead" # magenta
+      base0F: "5e81ac" # brown / misc
+      base10: "4c566a" # ansi bright black (= base03)
+      base11: "eceff4" # ansi bright white/grey (= base07)
+      base12: "bf616a" # ansi bright red (= base08)
+      base13: "ebcb8b" # ansi bright yellow (= base0A)
+      base14: "a3be8c" # ansi bright green (= base0B)
+      base15: "88c0d0" # ansi bright cyan (= base0C)
+      base16: "81a1c1" # ansi bright blue (= base0D)
+      base17: "b48ead" # ansi bright magenta (= base0E)
+  github-dark:
+    name: "GitHub Dark"
+    palette:
+      # From tinted-theming's github-dark (base16).
+      # base12-17 from the same author's base24 github-dark;
+      # base10/11 = base03/07 per this repo's slot convention.
+      base00: "0d1117" # bg
+      base01: "151b23" # bg alt
+      base02: "2f3742" # selection bg
+      base03: "656c76" # comment / muted fg
+      base04: "9198a1" # dim fg / line numbers
+      base05: "d1d7e0" # fg
+      base06: "f0f6fc" # bright fg
+      base07: "ffffff" # brightest fg
+      base08: "ff7b72" # red
+      base09: "ffa657" # orange
+      base0A: "d29922" # yellow
+      base0B: "3fb950" # green
+      base0C: "39c5cf" # cyan
+      base0D: "58a6ff" # blue
+      base0E: "be8fff" # magenta
+      base0F: "ffa198" # brown / misc
+      base10: "656c76" # ansi bright black (= base03)
+      base11: "ffffff" # ansi bright white/grey (= base07)
+      base12: "ffa198" # ansi bright red
+      base13: "e3b341" # ansi bright yellow
+      base14: "56d364" # ansi bright green
+      base15: "56d4dd" # ansi bright cyan
+      base16: "79c0ff" # ansi bright blue
+      base17: "d2a8ff" # ansi bright magenta
+  jellybeans:
+    name: "Jellybeans"
+    palette:
+      # From tinted-theming's jellybeans (base16).
+      # base12-17 from base24 jellybeans (the base16 file's source);
+      # base10/11 = base03/07 per this repo's slot convention.
+      base00: "121212" # bg
+      base01: "929292" # bg alt
+      base02: "bdbdbd" # selection bg
+      base03: "c5c5c5" # comment / muted fg
+      base04: "cdcdcd" # dim fg / line numbers
+      base05: "d5d5d5" # fg
+      base06: "dedede" # bright fg
+      base07: "ffffff" # brightest fg
+      base08: "ffa1a1" # red
+      base09: "ffba7b" # orange
+      base0A: "ffdca0" # yellow
+      base0B: "bddeab" # green
+      base0C: "1ab2a8" # cyan
+      base0D: "b1d8f6" # blue
+      base0E: "fbdaff" # magenta
+      base0F: "713939" # brown / misc
+      base10: "c5c5c5" # ansi bright black (= base03)
+      base11: "ffffff" # ansi bright white/grey (= base07)
+      base12: "ffa1a1" # ansi bright red
+      base13: "ffdca0" # ansi bright yellow
+      base14: "bddeab" # ansi bright green
+      base15: "1ab2a8" # ansi bright cyan
+      base16: "b1d8f6" # ansi bright blue
+      base17: "fbdaff" # ansi bright magenta
+  ayu-dark:
+    name: "Ayu Dark"
+    palette:
+      # From tinted-theming's ayu-dark (base16, with the Ayu Theme authors).
+      # base12-17 from the same authors' base24 ayu-dark;
+      # base10/11 = base03/07 per this repo's slot convention.
+      base00: "0b0e14" # bg
+      base01: "131721" # bg alt
+      base02: "202229" # selection bg
+      base03: "3e4b59" # comment / muted fg
+      base04: "bfbdb6" # dim fg / line numbers
+      base05: "e6e1cf" # fg
+      base06: "ece8db" # bright fg
+      base07: "f2f0e7" # brightest fg
+      base08: "f07178" # red
+      base09: "ff8f40" # orange
+      base0A: "ffb454" # yellow
+      base0B: "aad94c" # green
+      base0C: "95e6cb" # cyan
+      base0D: "59c2ff" # blue
+      base0E: "d2a6ff" # magenta
+      base0F: "e6b450" # brown / misc
+      base10: "3e4b59" # ansi bright black (= base03)
+      base11: "f2f0e7" # ansi bright white/grey (= base07)
+      base12: "f26d78" # ansi bright red
+      base13: "e6b673" # ansi bright yellow
+      base14: "7fd962" # ansi bright green
+      base15: "39bae6" # ansi bright cyan
+      base16: "73b8ff" # ansi bright blue
+      base17: "ddbcff" # ansi bright magenta
+  oxocarbon-dark:
+    name: "Oxocarbon Dark"
+    palette:
+      # From tinted-theming's oxocarbon-dark (by shaunsingh/IBM).
+      # No upstream bright-ANSI set, so base10-17 fall back to aliasing per the rule above.
+      # base07 = white instead of teal 08bdba, since base07 is WezTerm's
+      # bright white.
+      base00: "161616" # bg
+      base01: "262626" # bg alt
+      base02: "393939" # selection bg
+      base03: "525252" # comment / muted fg
+      base04: "dde1e6" # dim fg / line numbers
+      base05: "f2f4f8" # fg
+      base06: "ffffff" # bright fg
+      base07: "ffffff" # brightest fg
+      base08: "ee5396" # red
+      base09: "ff7eb6" # orange
+      base0A: "ff6f00" # yellow
+      base0B: "42be65" # green
+      base0C: "3ddbd9" # cyan
+      base0D: "33b1ff" # blue
+      base0E: "be95ff" # magenta
+      base0F: "82cfff" # brown / misc
+      base10: "525252" # ansi bright black (= base03)
+      base11: "ffffff" # ansi bright white/grey (= base07)
+      base12: "ee5396" # ansi bright red (= base08)
+      base13: "ff6f00" # ansi bright yellow (= base0A)
+      base14: "42be65" # ansi bright green (= base0B)
+      base15: "3ddbd9" # ansi bright cyan (= base0C)
+      base16: "33b1ff" # ansi bright blue (= base0D)
+      base17: "be95ff" # ansi bright magenta (= base0E)
+  hybrid:
+    name: "Hybrid"
+    palette:
+      # No faithful base16 upstream (tinted-theming's hybrid is a different
+      # iTerm scheme). Derived from w0ng/vim-hybrid's colors/hybrid.vim dark
+      # palette: background/line/selection/comment for base00-03, LineNr
+      # (selection) for base04. Hybrid has one fg, so base05-07 repeat. Its
+      # GUI accents are its terminal brights, so base10-17 alias per the rule
+      # above.
+      base00: "1d1f21" # bg
+      base01: "282a2e" # bg alt
+      base02: "373b41" # selection bg
+      base03: "707880" # comment / muted fg
+      base04: "373b41" # dim fg / line numbers
+      base05: "c5c8c6" # fg
+      base06: "c5c8c6" # bright fg
+      base07: "c5c8c6" # brightest fg
+      base08: "cc6666" # red
+      base09: "de935f" # orange
+      base0A: "f0c674" # yellow
+      base0B: "b5bd68" # green
+      base0C: "8abeb7" # cyan
+      base0D: "81a2be" # blue
+      base0E: "b294bb" # magenta
+      base0F: "cc6666" # brown / misc
+      base10: "707880" # ansi bright black (= base03)
+      base11: "c5c8c6" # ansi bright white/grey (= base07)
+      base12: "cc6666" # ansi bright red (= base08)
+      base13: "f0c674" # ansi bright yellow (= base0A)
+      base14: "b5bd68" # ansi bright green (= base0B)
+      base15: "8abeb7" # ansi bright cyan (= base0C)
+      base16: "81a2be" # ansi bright blue (= base0D)
+      base17: "b294bb" # ansi bright magenta (= base0E)
+  iceberg:
+    name: "Iceberg"
+    palette:
+      # No published base16 upstream. Derived from cocopon/iceberg.vim's
+      # colors/iceberg.vim (dark): Normal/CursorLine/Visual/Comment/LineNr for
+      # base00-04, g:terminal_ansi_colors for the accents (Iceberg has no pure
+      # yellow, so base0A is its bright yellow, a light orange).
+      # base12-17 from the same g:terminal_ansi_colors brights; base10/11 =
+      # base03/07 per this repo's slot convention.
+      base00: "161821" # bg
+      base01: "1e2132" # bg alt
+      base02: "272c42" # selection bg
+      base03: "6b7089" # comment / muted fg
+      base04: "444b71" # dim fg / line numbers
+      base05: "c6c8d1" # fg
+      base06: "d2d4de" # bright fg
+      base07: "e8e9ec" # brightest fg
+      base08: "e27878" # red
+      base09: "e2a478" # orange
+      base0A: "e9b189" # yellow
+      base0B: "b4be82" # green
+      base0C: "89b8c2" # cyan
+      base0D: "84a0c6" # blue
+      base0E: "a093c7" # magenta
+      base0F: "e98989" # brown / misc
+      base10: "6b7089" # ansi bright black (= base03)
+      base11: "e8e9ec" # ansi bright white/grey (= base07)
+      base12: "e98989" # ansi bright red
+      base13: "e9b189" # ansi bright yellow
+      base14: "c0ca8e" # ansi bright green
+      base15: "95c4ce" # ansi bright cyan
+      base16: "91acd1" # ansi bright blue
+      base17: "ada0d3" # ansi bright magenta
+  sonokai:
+    name: "Sonokai"
+    palette:
+      # No published base16 upstream. Derived from sainnhe/sonokai's 'default'
+      # palette (autoload/sonokai.vim): bg0/bg1/bg4 (Visual)/grey (Comment)/
+      # grey_dim (LineNr) for base00-04. Sonokai has a single fg and a single
+      # blue, so base05-07 and base0C/0D repeat. Upstream's terminal brights
+      # equal its normal colors, so base10-17 alias per the rule above.
+      base00: "2c2e34" # bg
+      base01: "33353f" # bg alt
+      base02: "414550" # selection bg
+      base03: "7f8490" # comment / muted fg
+      base04: "595f6f" # dim fg / line numbers
+      base05: "e2e2e3" # fg
+      base06: "e2e2e3" # bright fg
+      base07: "e2e2e3" # brightest fg
+      base08: "fc5d7c" # red
+      base09: "f39660" # orange
+      base0A: "e7c664" # yellow
+      base0B: "9ed072" # green
+      base0C: "76cce0" # cyan
+      base0D: "76cce0" # blue
+      base0E: "b39df3" # magenta
+      base0F: "ff6077" # brown / misc
+      base10: "7f8490" # ansi bright black (= base03)
+      base11: "e2e2e3" # ansi bright white/grey (= base07)
+      base12: "fc5d7c" # ansi bright red (= base08)
+      base13: "e7c664" # ansi bright yellow (= base0A)
+      base14: "9ed072" # ansi bright green (= base0B)
+      base15: "76cce0" # ansi bright cyan (= base0C)
+      base16: "76cce0" # ansi bright blue (= base0D)
+      base17: "b39df3" # ansi bright magenta (= base0E)
