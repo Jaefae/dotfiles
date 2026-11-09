@@ -2,7 +2,7 @@
 # Switches this machine's theme: records the choice in the git-ignored
 # .chezmoidata/zz-local.yaml (read last, so it overrides the default in
 # .chezmoidata/00-defaults.yaml), re-applies every themed file through
-# chezmoi.
+# chezmoi, and recolors any running Neovim instances.
 #
 # Themed files are discovered, not listed: any template that includes
 # {{ template "theme-guard" . }} is re-applied. Theming a new tool only
@@ -75,6 +75,20 @@ if ! chezmoi apply --force -- "${targets[@]}"; then
 	fi
 	chezmoi apply --force -- "${targets[@]}" || true
 	exit 1
+fi
+
+# 4. Recolor running Neovim instances. theme-broadcast.lua sends each one a
+#    non-blocking RPC notification, so an nvim waiting at a prompt can't hang
+#    this script; it switches as soon as it's free.
+broadcaster="$HOME/.config/nvim/theme-broadcast.lua"
+if command -v nvim >/dev/null 2>&1 && [ -f "$broadcaster" ]; then
+	sockets=()
+	for socket in "${TMPDIR:-/tmp}"/nvim."$USER"/*/nvim.*.0 "${XDG_RUNTIME_DIR:-/nonexistent}"/nvim.*.0; do
+		[ -S "$socket" ] && sockets+=("$socket")
+	done
+	if [ "${#sockets[@]}" -gt 0 ]; then
+		nvim --clean -l "$broadcaster" "$slug" "${sockets[@]}" >/dev/null 2>&1 || true
+	fi
 fi
 
 echo "Theme set to $slug"

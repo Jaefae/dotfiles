@@ -1,7 +1,7 @@
 # Switches this machine's theme: records the choice in the git-ignored
 # .chezmoidata/zz-local.yaml (read last, so it overrides the default in
 # .chezmoidata/00-defaults.yaml), re-applies every themed file through
-# chezmoi.
+# chezmoi, and recolors any running Neovim instances.
 #
 # Themed files are discovered, not listed: any template that includes
 # {{ template "theme-guard" . }} is re-applied. Theming a new tool only
@@ -102,6 +102,20 @@ if ($LASTEXITCODE -ne 0) {
 	}
 	& chezmoi apply --force -- @targets
 	exit 1
+}
+
+# 4. Recolor running Neovim instances over their named pipes.
+#    theme-broadcast.lua sends each one a non-blocking RPC notification, so
+#    an nvim waiting at a prompt can't hang this script; it switches as soon
+#    as it's free.
+$broadcaster = Join-Path $HOME ".config\nvim\theme-broadcast.lua"
+if ((Get-Command nvim -ErrorAction SilentlyContinue) -and (Test-Path -LiteralPath $broadcaster)) {
+	$pipes = @(Get-ChildItem -LiteralPath "\\.\pipe\" -ErrorAction SilentlyContinue |
+		Where-Object { $_.Name -like "nvim.*" } |
+		ForEach-Object { "\\.\pipe\$($_.Name)" })
+	if ($pipes.Count -gt 0) {
+		& nvim --clean -l $broadcaster $Slug @pipes *> $null
+	}
 }
 
 Write-Output "Theme set to $Slug"

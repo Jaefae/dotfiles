@@ -1,9 +1,6 @@
-# Lists the themes from .chezmoidata.yaml via fzf and hands the choice to
-# theme-sync.ps1, which syncs WezTerm and starship live.
-#
-# Known gap: this does NOT recolor an already-running Neovim instance —
-# use the <leader>ft Telescope picker inside Neovim for that. This script
-# is for switching from a plain terminal when Neovim isn't open.
+# Lists the themes from .chezmoidata/ via fzf and hands the choice to
+# theme-sync.ps1, which re-applies every themed file (WezTerm, starship,
+# fzf, eza, Neovim) and recolors running Neovim instances too.
 $ErrorActionPreference = "Stop"
 
 $listTemplate = @'
