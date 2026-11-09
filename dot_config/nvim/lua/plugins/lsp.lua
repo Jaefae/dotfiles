@@ -28,7 +28,12 @@ return {
 		event = { "BufReadPre", "BufNewFile" },
 		dependencies = { "mason.nvim", "neovim/nvim-lspconfig" },
 		opts = {
-			ensure_installed = { "lua_ls" },
+			-- "ts_ls" is TypeScript's own language server (tsserver wrapped for
+			-- LSP) — the right choice for Node/npm projects, since it resolves
+			-- node_modules/package.json/tsconfig.json. denols is a different,
+			-- Deno-runtime-specific server (its own module resolution, no
+			-- node_modules) and isn't what a Node project needs.
+			ensure_installed = { "lua_ls", "ts_ls" },
 		},
 	},
 }

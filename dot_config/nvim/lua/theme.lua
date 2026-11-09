@@ -25,6 +25,12 @@ function M.apply(slug)
 	-- groups, which setup() then overrides.
 	vim.o.background = theme.variant == "light" and "light" or "dark"
 	require("base16-colorscheme").setup(theme.palette)
+	-- base16-colorscheme links NormalFloat to Normal, so hover/diagnostic/
+	-- completion floats are the same color as the buffer behind them. base01
+	-- is the palette's "lighter background" step, used elsewhere for things
+	-- like the statusline, so it reads as a raised surface in every theme.
+	vim.api.nvim_set_hl(0, "NormalFloat", { bg = theme.palette.base01 })
+	vim.api.nvim_set_hl(0, "FloatBorder", { fg = theme.palette.base03, bg = theme.palette.base01 })
 	M.current = slug
 	-- base16-colorscheme.setup() only sets highlight groups and never fires
 	-- ColorScheme, so plugins that cache theme colors (lualine) would keep

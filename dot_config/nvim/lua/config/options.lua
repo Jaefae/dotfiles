@@ -25,6 +25,7 @@ opt.swapfile = false
 opt.updatetime = 200
 
 opt.termguicolors = true
+opt.winborder = "rounded" -- border on all floats (hover, diagnostics, etc.) so they read as separate from the buffer
 
 opt.clipboard = "unnamedplus"
 
